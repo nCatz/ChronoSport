@@ -17,6 +17,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     public static final int DATABASE_VERSION = 1;
     public static final String DATABASE_NAME = "ChronoSport.db";
     public static DataBaseHelper instance;
+    public SQLiteDatabase database;
 
     public static DataBaseHelper getInstance(){
 
@@ -30,7 +31,12 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
     public SQLiteDatabase openDataBase(){
 
-        return getWritableDatabase();
+        if(database == null){
+
+            database = getWritableDatabase();
+        }
+
+        return database;
     }
 
     public void closeDataBase(){
@@ -104,7 +110,6 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
                 db.execSQL("PRAGMA foreign_keys = ON");
             }
-
         }
     }
 }

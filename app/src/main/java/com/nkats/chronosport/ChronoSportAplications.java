@@ -26,9 +26,7 @@ public class ChronoSportAplications extends Application {
         DataBaseHelper.getInstance().openDataBase();
     }
 
-    @Override
-    public void onTerminate() {
-        DataBaseHelper.getInstance().closeDataBase();
-        super.onTerminate();
-    }
+
+
+
 }
