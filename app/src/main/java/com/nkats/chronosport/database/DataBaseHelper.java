@@ -19,7 +19,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     public static DataBaseHelper instance;
     public SQLiteDatabase database;
 
-    public static DataBaseHelper getInstance(){
+    public synchronized static DataBaseHelper getInstance(){
 
         if(instance == null){
 
@@ -29,7 +29,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         return instance;
     }
 
-    public SQLiteDatabase openDataBase(){
+    public synchronized SQLiteDatabase openDataBase(){
 
         if(database == null){
 
