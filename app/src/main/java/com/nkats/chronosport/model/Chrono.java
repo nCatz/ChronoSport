@@ -12,14 +12,25 @@ public class Chrono {
     private final int MAX_ELEMENTS = 20;
 
     private int id;
+    private String name;
     private List<ChronoElement> elements;
     private int repetitions;
     private boolean playing;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 
     public Chrono() {
         elements = new ArrayList<>();
         repetitions = MIN_REPETITIONS;
         playing = false;
+        name = "";
+
     }
 
     public int getId() {

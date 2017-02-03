@@ -11,6 +11,11 @@ public class ChronoRepetitionElement extends ChronoElement {
         this.repetitions = repetitions;
     }
 
+    public ChronoRepetitionElement() {
+
+    }
+
+
     public int getRepetitions() {
         return repetitions;
     }

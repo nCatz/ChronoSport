@@ -11,6 +11,10 @@ public class ChronoTimeElement extends ChronoElement {
         this.time = time;
     }
 
+    public ChronoTimeElement() {
+
+    }
+
     public int getTime() {
         return time;
     }
