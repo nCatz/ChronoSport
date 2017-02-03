@@ -17,7 +17,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     public static final int DATABASE_VERSION = 1;
     public static final String DATABASE_NAME = "ChronoSport.db";
     public static DataBaseHelper instance;
-    
+
     public static DataBaseHelper getInstance(){
 
         if(instance == null){
@@ -49,11 +49,12 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
         try {
             sqLiteDatabase.execSQL(DatabaseContract.ChronoTimeElemntEntry.SQL_CREATE_ENTRIES);
-            sqLiteDatabase.execSQL(DatabaseContract.ChronoTimeElemntEntry.SQL_CREATE_ENTRIES);
+            sqLiteDatabase.execSQL(DatabaseContract.ChronoRepetitionElementEntry.SQL_CREATE_ENTRIES);
             sqLiteDatabase.execSQL(DatabaseContract.ChronoEntry.SQL_CREATE_ENTRIES);
-            onCreate(sqLiteDatabase);
             sqLiteDatabase.setTransactionSuccessful();
         } catch (SQLException e) {
+
+            e.getMessage();
 
 
         }finally {
@@ -70,7 +71,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
         try {
             sqLiteDatabase.execSQL(DatabaseContract.ChronoTimeElemntEntry.SQL_DELETE_ENTRIES);
-            sqLiteDatabase.execSQL(DatabaseContract.ChronoTimeElemntEntry.SQL_DELETE_ENTRIES);
+            sqLiteDatabase.execSQL(DatabaseContract.ChronoRepetitionElementEntry.SQL_DELETE_ENTRIES);
             sqLiteDatabase.execSQL(DatabaseContract.ChronoEntry.SQL_DELETE_ENTRIES);
             onCreate(sqLiteDatabase);
             sqLiteDatabase.setTransactionSuccessful();
