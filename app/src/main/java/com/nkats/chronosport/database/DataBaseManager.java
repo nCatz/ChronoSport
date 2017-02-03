@@ -15,7 +15,7 @@ import com.nkats.chronosport.model.ChronoTimeElement;
 public class DataBaseManager {
 
     public void addChrono(Chrono chrono){
-        
+
 
     }
 
@@ -50,10 +50,10 @@ public class DataBaseManager {
     private void addChronoTimeElement(int fkChrono, ChronoTimeElement element){
 
         ContentValues params = new ContentValues();
-        params.put(DatabaseContract.ChronoTimeElemntEntry.COLUMN_NAME, element.getName());
-        params.put(DatabaseContract.ChronoTimeElemntEntry.COLUMN_TIME, element.getTime());
-        params.put(DatabaseContract.ChronoTimeElemntEntry.COLUMN_ID_CHRONO_FK, fkChrono);
-        element.setId((int)DataBaseHelper.getInstance().openDataBase().insert(DatabaseContract.ChronoTimeElemntEntry.TABLE_NAME,
+        params.put(DatabaseContract.ChronoTimeElementEntry.COLUMN_NAME, element.getName());
+        params.put(DatabaseContract.ChronoTimeElementEntry.COLUMN_TIME, element.getTime());
+        params.put(DatabaseContract.ChronoTimeElementEntry.COLUMN_ID_CHRONO_FK, fkChrono);
+        element.setId((int)DataBaseHelper.getInstance().openDataBase().insert(DatabaseContract.ChronoTimeElementEntry.TABLE_NAME,
                 null, params));
     }
 
@@ -82,10 +82,10 @@ public class DataBaseManager {
     private void updateChronoTimeElement(ChronoTimeElement element){
 
         ContentValues params = new ContentValues();
-        params.put(DatabaseContract.ChronoTimeElemntEntry.COLUMN_NAME, element.getName());
-        params.put(DatabaseContract.ChronoTimeElemntEntry.COLUMN_TIME, element.getTime());
+        params.put(DatabaseContract.ChronoTimeElementEntry.COLUMN_NAME, element.getName());
+        params.put(DatabaseContract.ChronoTimeElementEntry.COLUMN_TIME, element.getTime());
         String[] whereParams = {String.valueOf(element.getId())};
-        DataBaseHelper.getInstance().openDataBase().update(DatabaseContract.ChronoTimeElemntEntry.TABLE_NAME,
+        DataBaseHelper.getInstance().openDataBase().update(DatabaseContract.ChronoTimeElementEntry.TABLE_NAME,
                 params, "_id = ?", whereParams);
 
     }
@@ -103,7 +103,7 @@ public class DataBaseManager {
     public void deleteChronoElement(ChronoElement element){
 
         String[] whereParams = {String.valueOf(element.getId())};
-        String tableName = DatabaseContract.ChronoTimeElemntEntry.TABLE_NAME;
+        String tableName = DatabaseContract.ChronoTimeElementEntry.TABLE_NAME;
 
         if(element instanceof ChronoRepetitionElement){
 

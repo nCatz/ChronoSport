@@ -48,7 +48,7 @@ public class DatabaseContract {
 
     }
 
-    public static class ChronoTimeElemntEntry implements BaseColumns{
+    public static class ChronoTimeElementEntry implements BaseColumns{
 
         public static final String TABLE_NAME = "chrono_time_element";
         public static final String COLUMN_NAME = "cht_name";

@@ -1,6 +1,5 @@
 package com.nkats.chronosport.database;
 
-import android.content.Context;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -54,7 +53,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         sqLiteDatabase.beginTransaction();
 
         try {
-            sqLiteDatabase.execSQL(DatabaseContract.ChronoTimeElemntEntry.SQL_CREATE_ENTRIES);
+            sqLiteDatabase.execSQL(DatabaseContract.ChronoTimeElementEntry.SQL_CREATE_ENTRIES);
             sqLiteDatabase.execSQL(DatabaseContract.ChronoRepetitionElementEntry.SQL_CREATE_ENTRIES);
             sqLiteDatabase.execSQL(DatabaseContract.ChronoEntry.SQL_CREATE_ENTRIES);
             sqLiteDatabase.setTransactionSuccessful();
@@ -76,7 +75,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         sqLiteDatabase.beginTransaction();
 
         try {
-            sqLiteDatabase.execSQL(DatabaseContract.ChronoTimeElemntEntry.SQL_DELETE_ENTRIES);
+            sqLiteDatabase.execSQL(DatabaseContract.ChronoTimeElementEntry.SQL_DELETE_ENTRIES);
             sqLiteDatabase.execSQL(DatabaseContract.ChronoRepetitionElementEntry.SQL_DELETE_ENTRIES);
             sqLiteDatabase.execSQL(DatabaseContract.ChronoEntry.SQL_DELETE_ENTRIES);
             onCreate(sqLiteDatabase);
