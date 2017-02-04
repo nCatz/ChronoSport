@@ -1,4 +1,4 @@
-package com.nkats.chronosport.model;
+package com.ncatz.chronosport.model;
 
 /**
  * Created by yeray697 on 2/02/17.

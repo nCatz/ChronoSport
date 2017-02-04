@@ -1,4 +1,4 @@
-package com.nkats.chronosport;
+package com.ncatz.chronosport;
 
 import org.junit.Test;
 

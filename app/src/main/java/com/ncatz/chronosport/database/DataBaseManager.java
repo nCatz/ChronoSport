@@ -1,12 +1,12 @@
-package com.nkats.chronosport.database;
+package com.ncatz.chronosport.database;
 
 import android.content.ContentValues;
 import android.database.Cursor;
 
-import com.nkats.chronosport.model.Chrono;
-import com.nkats.chronosport.model.ChronoElement;
-import com.nkats.chronosport.model.ChronoRepetitionElement;
-import com.nkats.chronosport.model.ChronoTimeElement;
+import com.ncatz.chronosport.model.Chrono;
+import com.ncatz.chronosport.model.ChronoElement;
+import com.ncatz.chronosport.model.ChronoRepetitionElement;
+import com.ncatz.chronosport.model.ChronoTimeElement;
 
 import java.util.ArrayList;
 

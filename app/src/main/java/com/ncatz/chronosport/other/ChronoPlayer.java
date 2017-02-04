@@ -1,8 +1,8 @@
-package com.nkats.chronosport;
+package com.ncatz.chronosport.other;
 
 import android.content.Context;
 
-import com.nkats.chronosport.model.Chrono;
+import com.ncatz.chronosport.model.Chrono;
 
 /**
  * Created by yeray697 on 2/02/17.

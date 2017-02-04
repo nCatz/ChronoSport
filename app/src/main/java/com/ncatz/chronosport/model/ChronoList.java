@@ -1,4 +1,4 @@
-package com.nkats.chronosport.model;
+package com.ncatz.chronosport.model;
 
 import java.util.ArrayList;
 import java.util.List;

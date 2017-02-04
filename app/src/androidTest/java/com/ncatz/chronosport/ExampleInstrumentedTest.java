@@ -1,4 +1,4 @@
-package com.nkats.chronosport;
+package com.ncatz.chronosport;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;

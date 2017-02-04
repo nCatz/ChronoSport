@@ -1,9 +1,9 @@
-package com.nkats.chronosport;
+package com.ncatz.chronosport;
 
 import android.app.Application;
 import android.content.Context;
 
-import com.nkats.chronosport.database.DataBaseHelper;
+import com.ncatz.chronosport.database.DataBaseHelper;
 
 /**
  * Created by amador on 3/02/17.

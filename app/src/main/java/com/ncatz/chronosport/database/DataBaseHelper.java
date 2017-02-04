@@ -1,11 +1,11 @@
-package com.nkats.chronosport.database;
+package com.ncatz.chronosport.database;
 
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Build;
 
-import com.nkats.chronosport.ChronoSportAplications;
+import com.ncatz.chronosport.ChronoSportAplications;
 
 /**
  * Created by amador on 3/02/17.

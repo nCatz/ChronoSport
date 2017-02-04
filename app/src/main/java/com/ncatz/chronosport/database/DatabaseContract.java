@@ -1,8 +1,6 @@
-package com.nkats.chronosport.database;
+package com.ncatz.chronosport.database;
 
 import android.provider.BaseColumns;
-
-import com.nkats.chronosport.model.Chrono;
 
 /**
  * Created by amador on 3/02/17.
