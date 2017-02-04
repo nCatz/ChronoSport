@@ -16,12 +16,14 @@ public class Chrono {
     private List<ChronoElement> elements;
     private int repetitions;
     private boolean playing;
+    private boolean expanded;
 
     public Chrono() {
         elements = new ArrayList<>();
         repetitions = MIN_REPETITIONS;
         playing = false;
         name = "";
+        expanded = false;
 
     }
 
@@ -53,10 +55,9 @@ public class Chrono {
         return repetitions;
     }
 
-    public void setRepetitions(int repetitions) throws Exception {
-        if (repetitions < MIN_REPETITIONS)
-            throw new Exception("You can not set '"+repetitions+"' repetitions. You have to set a number greater or equal than "+ MIN_REPETITIONS);
-        this.repetitions = repetitions;
+    public void setRepetitions(int repetitions){
+        if (repetitions >= MIN_REPETITIONS)
+            this.repetitions = repetitions;
     }
 
     public boolean isPlaying() {
@@ -101,11 +102,10 @@ public class Chrono {
     public ChronoElement copyElement(ChronoElement element){
         ChronoElement newElement = null;
         if (element instanceof ChronoTimeElement){
-            newElement = new ChronoTimeElement(((ChronoTimeElement) element).getTime());
+            newElement = new ChronoTimeElement(element.getName(),((ChronoTimeElement) element).getTime());
         } else {
-            newElement = new ChronoRepetitionElement(((ChronoRepetitionElement) element).getRepetitions());
+            newElement = new ChronoRepetitionElement(element.getName(),((ChronoRepetitionElement) element).getRepetitions());
         }
-        newElement.setName(element.getName());
         //You have to set the id after method call!!
         return newElement;
     }
@@ -123,5 +123,13 @@ public class Chrono {
         }
 
         return position;
+    }
+
+    public boolean isExpanded() {
+        return expanded;
+    }
+
+    public void invertExpand() {
+        expanded = !expanded;
     }
 }

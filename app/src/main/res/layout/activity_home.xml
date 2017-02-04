@@ -9,19 +9,6 @@
     <FrameLayout
         android:id="@+id/fl_frameHome"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context=".Home_Activity"/>
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/btManageChrono"
-        android:text="btManageChrono"
-        android:layout_alignParentBottom="true"/>
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/btChronoPlayer"
-        android:text="btChronoPlayer"
-        android:layout_above="@id/btManageChrono"/>
+        android:layout_height="match_parent"/>
 
 </RelativeLayout>

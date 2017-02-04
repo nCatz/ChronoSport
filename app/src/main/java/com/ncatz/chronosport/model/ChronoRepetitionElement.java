@@ -7,8 +7,9 @@ package com.ncatz.chronosport.model;
 public class ChronoRepetitionElement extends ChronoElement {
     private int repetitions;
 
-    public ChronoRepetitionElement(int repetitions) {
+    public ChronoRepetitionElement(String name, int repetitions) {
         this.repetitions = repetitions;
+        super.setName(name);
     }
 
     public ChronoRepetitionElement() {
