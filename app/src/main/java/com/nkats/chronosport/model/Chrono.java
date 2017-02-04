@@ -17,14 +17,6 @@ public class Chrono {
     private int repetitions;
     private boolean playing;
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public Chrono() {
         elements = new ArrayList<>();
         repetitions = MIN_REPETITIONS;
@@ -39,6 +31,14 @@ public class Chrono {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public List<ChronoElement> getElements() {

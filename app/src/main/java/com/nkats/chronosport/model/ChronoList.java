@@ -46,12 +46,12 @@ public class ChronoList {
 
     public Chrono copyChrono(Chrono chrono){
         Chrono newChrono  = new Chrono();
-
         try {
             newChrono.setRepetitions(chrono.getRepetitions());
         } catch (Exception e) {
             e.printStackTrace();
         }
+        newChrono.setName(chrono.getName());
         newChrono.setPlaying(chrono.isPlaying());
         newChrono.setElements(chrono.getElements());
         //You have to set the id after method call!!
