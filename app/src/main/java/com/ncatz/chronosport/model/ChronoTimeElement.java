@@ -7,8 +7,9 @@ package com.ncatz.chronosport.model;
 public class ChronoTimeElement extends ChronoElement {
     private int time;
 
-    public ChronoTimeElement(int time) {
+    public ChronoTimeElement(String name, int time) {
         this.time = time;
+        super.setName(name);
     }
 
     public ChronoTimeElement() {

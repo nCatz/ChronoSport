@@ -71,7 +71,6 @@ public class ChronoWidget extends RelativeLayout {
         void onNextButtonCliked();
     }
 
-
     public ChronoWidget(Context context, AttributeSet attrs) {
         super(context, attrs);
         ((Activity)context).getLayoutInflater().inflate(R.layout.mixer_chrono,this,true);
@@ -161,6 +160,8 @@ public class ChronoWidget extends RelativeLayout {
             callBack.onNextButtonCliked();
         }
     }
+
+
 
 
 }

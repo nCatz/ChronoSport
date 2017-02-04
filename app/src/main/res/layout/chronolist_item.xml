@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="10dp">
+    <RelativeLayout
+        android:id="@+id/header_chronolist_item"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/background_item_not_expanded">
+
+        <ImageView
+            android:id="@+id/btChronoExpand_item"
+            android:layout_width="25dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:src="@mipmap/ic_expand" />
+
+
+        <Button
+            android:layout_marginLeft="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:id="@+id/btPlayChrono_item"
+            android:gravity="center"
+            android:layout_centerVertical="true"
+            android:background="@android:drawable/ic_media_play"/>
+        <TextView
+            android:id="@+id/tvChronoTitle_item"
+            android:layout_width="match_parent"
+            android:layout_toRightOf="@id/btPlayChrono_item"
+            android:layout_toEndOf="@id/btPlayChrono_item"
+            android:layout_toLeftOf="@id/btChronoExpand_item"
+            android:layout_toStartOf="@id/btChronoExpand_item"
+            android:layout_height="wrap_content"
+            android:paddingTop="16dp"
+            android:paddingEnd="16dp"
+            android:paddingRight="16dp"
+            android:paddingBottom="5dp"
+            android:paddingLeft="10dp"
+            android:paddingStart="10dp"
+            android:textStyle="bold"
+            android:text="Title" />
+
+        <TextView
+            android:id="@+id/tvChronoRepetitions_item"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@id/btChronoExpand_item"
+            android:layout_toStartOf="@id/btChronoExpand_item"
+            android:layout_below="@id/tvChronoTitle_item"
+            android:paddingRight="16dp"
+            android:paddingEnd="16dp"
+            android:textStyle="bold"
+            android:text="Repetitions: " />
+
+        <TextView
+            android:id="@+id/tvChronoTime_item"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/btPlayChrono_item"
+            android:layout_toEndOf="@id/btPlayChrono_item"
+            android:layout_toLeftOf="@id/tvChronoRepetitions_item"
+            android:layout_toStartOf="@id/tvChronoRepetitions_item"
+            android:layout_below="@id/tvChronoTitle_item"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:textStyle="bold"
+            android:text="Total time: " />
+
+    </RelativeLayout>
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/body_chronolist_item"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/background_item_expanded">
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rvChronoSubList"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+    </RelativeLayout>
+</LinearLayout>
