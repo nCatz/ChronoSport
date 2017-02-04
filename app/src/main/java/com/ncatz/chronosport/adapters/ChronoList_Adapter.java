@@ -6,6 +6,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -29,6 +30,13 @@ public class ChronoList_Adapter extends RecyclerView.Adapter<ChronoList_Adapter.
     public ChronoList_Adapter(ArrayList<Chrono> items) {
         this.items = items;
     }
+
+    private OnPlayListener onPlayListener;
+
+    public interface OnPlayListener{
+        void onPlay(Chrono clickedChrono);
+    }
+
     @Override
     public ChronoHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         return new ChronoHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.chronolist_item,parent,false));
@@ -65,6 +73,14 @@ public class ChronoList_Adapter extends RecyclerView.Adapter<ChronoList_Adapter.
             holder.rlBody.getLayoutParams().height = 0;
         }
         holder.setElements(chrono.getElements());
+        holder.btPlay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (onPlayListener != null){
+                    onPlayListener.onPlay(chrono);
+                }
+            }
+        });
     }
 
     @Override
@@ -81,6 +97,7 @@ public class ChronoList_Adapter extends RecyclerView.Adapter<ChronoList_Adapter.
         ImageView btExpandCollapse;
         RecyclerView rvSubList;
         ChronoSubList_Adapter adapter;
+        Button btPlay;
 
         public ChronoHolder(View itemView) {
             super(itemView);
@@ -93,6 +110,7 @@ public class ChronoList_Adapter extends RecyclerView.Adapter<ChronoList_Adapter.
             rlHead = (RelativeLayout) itemView.findViewById(R.id.header_chronolist_item);
             rlBody = (RelativeLayout) itemView.findViewById(R.id.body_chronolist_item);
             rvSubList = (RecyclerView) itemView.findViewById(R.id.rvChronoSubList);
+            btPlay = (Button) itemView.findViewById(R.id.btPlayChrono_item);
             rvSubList.setLayoutManager(new LinearLayoutManager(itemView.getContext()));
             rvSubList.setAdapter(adapter);
             rlBody.setOnClickListener(new View.OnClickListener() {
@@ -107,5 +125,9 @@ public class ChronoList_Adapter extends RecyclerView.Adapter<ChronoList_Adapter.
             adapter.addAll(elements);
             adapter.notifyDataSetChanged();
         }
+    }
+
+    public void setOnPlayListener(OnPlayListener onPlayListener) {
+        this.onPlayListener = onPlayListener;
     }
 }

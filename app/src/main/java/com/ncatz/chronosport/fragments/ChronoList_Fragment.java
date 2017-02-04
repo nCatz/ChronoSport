@@ -10,6 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.ncatz.chronosport.R;
 import com.ncatz.chronosport.adapters.ChronoList_Adapter;
@@ -50,6 +51,12 @@ public class ChronoList_Fragment extends Fragment implements IChronoList.View{
         super.onCreate(savedInstanceState);
         presenter = new ChronoList_Presenter(this);
         adapter = new ChronoList_Adapter(getDefaultItems());
+        adapter.setOnPlayListener(new ChronoList_Adapter.OnPlayListener() {
+            @Override
+            public void onPlay(Chrono clickedChrono) {
+                Toast.makeText(getContext(), "Play " + clickedChrono.getName(), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     @Nullable

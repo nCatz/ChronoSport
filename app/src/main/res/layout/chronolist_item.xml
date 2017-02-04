@@ -20,11 +20,20 @@
             android:src="@mipmap/ic_expand" />
 
 
+        <Button
+            android:layout_marginLeft="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:id="@+id/btPlayChrono_item"
+            android:gravity="center"
+            android:layout_centerVertical="true"
+            android:background="@android:drawable/ic_media_play"/>
         <TextView
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
             android:id="@+id/tvChronoTitle_item"
             android:layout_width="match_parent"
+            android:layout_toRightOf="@id/btPlayChrono_item"
+            android:layout_toEndOf="@id/btPlayChrono_item"
             android:layout_toLeftOf="@id/btChronoExpand_item"
             android:layout_toStartOf="@id/btChronoExpand_item"
             android:layout_height="wrap_content"
@@ -53,11 +62,11 @@
             android:id="@+id/tvChronoTime_item"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/btPlayChrono_item"
+            android:layout_toEndOf="@id/btPlayChrono_item"
             android:layout_toLeftOf="@id/tvChronoRepetitions_item"
             android:layout_toStartOf="@id/tvChronoRepetitions_item"
             android:layout_below="@id/tvChronoTitle_item"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
             android:textStyle="bold"
