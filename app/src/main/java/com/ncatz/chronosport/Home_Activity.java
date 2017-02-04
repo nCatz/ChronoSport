@@ -11,8 +11,9 @@ import com.ncatz.chronosport.database.DataBaseHelper;
 import com.ncatz.chronosport.fragments.ChronoList_Fragment;
 import com.ncatz.chronosport.fragments.ChronoPlayer_Fragment;
 import com.ncatz.chronosport.fragments.ManageChrono_Fragment;
+import com.ncatz.chronosport.interfaces.ManageFragmentCallback;
 
-public class Home_Activity extends AppCompatActivity {
+public class Home_Activity extends AppCompatActivity implements ManageFragmentCallback {
 
     private static final String CURRENT_FRAGMENT_TAG_KEY = "CURRENT_FRAGMENT_TAG";
     private final static String CHRONO_LIST_TAG = "chronolist";
@@ -36,19 +37,6 @@ public class Home_Activity extends AppCompatActivity {
         } else {
             setFragment(currentFragmentTag,null);
         }
-
-        findViewById(R.id.btChronoPlayer).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                setFragment(CHRONO_PLAYER_TAG,null);
-            }
-        });
-        findViewById(R.id.btManageChrono).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                setFragment(MANAGE_CHRONO_TAG,null);
-            }
-        });
     }
 
     private void setFragment(String tag, Bundle args){
@@ -82,5 +70,10 @@ public class Home_Activity extends AppCompatActivity {
         if (!currentFragmentTag.equals("")) {
             outState.putString(CURRENT_FRAGMENT_TAG_KEY,currentFragmentTag);
         }
+    }
+
+    @Override
+    public void swapFragment(String tag, Bundle args) {
+        setFragment(tag,args);
     }
 }
