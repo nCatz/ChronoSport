@@ -1,6 +1,7 @@
 package com.ncatz.chronosport.fragments;
 
 import android.app.Activity;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -9,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.ncatz.chronosport.R;
+import com.ncatz.chronosport.custom_widgets.ChronoWidget;
 import com.ncatz.chronosport.interfaces.ManageFragmentCallback;
 
 /**
@@ -17,6 +19,9 @@ import com.ncatz.chronosport.interfaces.ManageFragmentCallback;
 
 public class ChronoList_Fragment extends Fragment {
     private ManageFragmentCallback mCallback;
+
+    //Borrar despues de las pruebas
+    ChronoWidget chronoWidget;
 
     public ChronoList_Fragment(){
 
@@ -29,6 +34,8 @@ public class ChronoList_Fragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.chronolist_fragment,container,false);
+
+
 
         return rootView;
     }

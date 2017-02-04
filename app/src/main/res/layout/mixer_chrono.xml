@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:CircleProgressView="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+<at.grabner.circleprogress.CircleProgressView
+    app:cpv_showTextInSpinningMode="false"
+    app:cpv_textMode="Text"
+    android:id="@+id/progress"
+    android:layout_width="100dp"
+    android:layout_height="100dp"
+    app:cpv_barWidth="8dp"
+    app:cpv_innerContourSize="0dp"
+    app:cpv_innerContourColor="#FFF"
+    app:cpv_outerContourColor="#fff"
+    app:cpv_barColor="@color/colorAccent"
+    android:layout_centerInParent="true"
+    app:cpv_rimWidth="8dp"
+    app:cpv_rimColor="#FFF"
+    app:cpv_barStartEndLineColor="@color/colorAccent"
+
+    />
+
+    <TextView
+
+        android:textSize="20dp"
+        android:id="@+id/chronoText"
+        android:layout_centerInParent="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <LinearLayout
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="50dp"
+        android:gravity="center"
+        android:layout_below="@+id/progress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <ImageButton
+            android:src="@android:drawable/ic_media_play"
+            android:id="@+id/btnStartPause"
+            android:layout_width="30dp"
+            android:layout_height="30dp" />
+
+        <ImageButton
+            android:layout_marginLeft="5dp"
+            android:src="@android:drawable/ic_media_next"
+            android:id="@+id/btnNext"
+            android:layout_width="30dp"
+            android:layout_height="30dp" />
+
+    </LinearLayout>
+
+
+</merge>
