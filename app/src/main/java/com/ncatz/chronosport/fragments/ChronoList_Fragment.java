@@ -8,9 +8,14 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.ActionMode;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -24,6 +29,7 @@ import com.ncatz.chronosport.model.Chrono;
 import com.ncatz.chronosport.model.ChronoElement;
 import com.ncatz.chronosport.model.ChronoRepetitionElement;
 import com.ncatz.chronosport.model.ChronoTimeElement;
+import com.ncatz.chronosport.other.MultiChoiceListener;
 import com.ncatz.chronosport.presenters.ChronoList_Presenter;
 
 import java.util.ArrayList;
@@ -36,7 +42,6 @@ public class ChronoList_Fragment extends Fragment implements IChronoList.View{
 
     private ListView listView;
 
-    private ChronoList_Adapter adapter;
     private IChronoList presenter;
     private ManageFragmentCallback mCallback;
 
@@ -53,15 +58,19 @@ public class ChronoList_Fragment extends Fragment implements IChronoList.View{
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         presenter = new ChronoList_Presenter(this);
-        adapter = new ChronoList_Adapter(getContext(),getDefaultItems());
-        adapter.setOnPlayListener(new ChronoList_Adapter.OnPlayListener() {
+        /*presenter.setOnAdapterClickListener(new IChronoList.OnAdapterClickListener() {
             @Override
-            public void onPlay(Chrono clickedChrono) {
+            public void onPlayListener(Chrono clickedChrono) {
                 Bundle args = new Bundle();
                 args.putParcelable(Home_Activity.CHRONO_ARGS_KEY,clickedChrono);
                 mCallback.swapFragment(Home_Activity.CHRONO_PLAYER_TAG,args);
             }
-        });
+
+            @Override
+            public void onSelectItemListener(int position) {
+                listView.setItemChecked(position, !presenter.isPositionChecked(position));
+            }
+        });*/
     }
 
     @Nullable
@@ -70,9 +79,32 @@ public class ChronoList_Fragment extends Fragment implements IChronoList.View{
         View rootView = inflater.inflate(R.layout.chronolist_fragment,container,false);
 
         listView = (ListView) rootView.findViewById(R.id.lvChronoList);
-        listView.setAdapter(adapter);
-
+        listView.setAdapter(presenter.getAdapter());
         return rootView;
+    }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        setMultiChoiceModeListView();
+    }
+
+    private void setMultiChoiceModeListView() {
+        listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
+        MultiChoiceListener multiChoiceListener = new MultiChoiceListener(presenter);
+        listView.setMultiChoiceModeListener(multiChoiceListener);
+        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+
+            @Override
+            public boolean onItemLongClick(AdapterView<?> arg0, View arg1,
+                                           int position, long arg3) {
+                // TODO Auto-generated method stub
+
+                listView.setItemChecked(position, !presenter.isPositionChecked(position));
+                return true;
+            }
+        });
     }
 
     @Override
@@ -87,55 +119,15 @@ public class ChronoList_Fragment extends Fragment implements IChronoList.View{
         mCallback = null;
     }
 
-    private ArrayList<Chrono> getDefaultItems() {
-        ArrayList<ChronoElement> elements = new ArrayList<>();
-        elements.add(new ChronoTimeElement("dfnbc",50));
-        elements.add(new ChronoRepetitionElement("qttwg",15));
-        ArrayList<Chrono> items = new ArrayList<>();
-        Chrono chrono = new Chrono();
-        elements = new ArrayList<>();
-        elements.add(new ChronoTimeElement("asgasg",150));
-        elements.add(new ChronoRepetitionElement("qttwg",15));
-        chrono.setElements(elements);
-        chrono.setName("aaaa");
-        chrono.setRepetitions(5);
-        items.add(chrono);
-        chrono = new Chrono();
-        elements = new ArrayList<>();
-        elements.add(new ChronoTimeElement("asgasg",150));
-        elements.add(new ChronoRepetitionElement("jgkf",20));
-        elements.add(new ChronoTimeElement("dfnbc",50));
-        chrono.setElements(elements);
-        chrono.setName("bbbb");
-        chrono.setRepetitions(4);
-        items.add(chrono);
-        chrono = new Chrono();
-        elements = new ArrayList<>();
-        elements.add(new ChronoTimeElement("asgasg",150));
-        elements.add(new ChronoRepetitionElement("jgkf",20));
-        elements.add(new ChronoRepetitionElement("qttwg",15));
-        elements.add(new ChronoTimeElement("dfnbc",50));
-        chrono.setElements(elements);
-        chrono.setName("cccc");
-        chrono.setRepetitions(3);
-        items.add(chrono);
-        chrono = new Chrono();
-        elements = new ArrayList<>();
-        elements.add(new ChronoRepetitionElement("jgkf",20));
-        elements.add(new ChronoRepetitionElement("qttwg",15));
-        chrono.setElements(elements);
-        chrono.setName("dddd");
-        chrono.setRepetitions(2);
-        items.add(chrono);
-        chrono = new Chrono();
-        elements = new ArrayList<>();
-        elements.add(new ChronoTimeElement("asgasg",150));
-        elements.add(new ChronoRepetitionElement("jgkf",20));
-        elements.add(new ChronoTimeElement("dfnbc",50));
-        chrono.setName("eeee");
-        chrono.setElements(elements);
-        chrono.setRepetitions(1);
-        items.add(chrono);
-        return items;
+    @Override
+    public void onPlayListener(Chrono clickedChrono) {
+        Bundle args = new Bundle();
+        args.putParcelable(Home_Activity.CHRONO_ARGS_KEY,clickedChrono);
+        mCallback.swapFragment(Home_Activity.CHRONO_PLAYER_TAG,args);
+    }
+
+    @Override
+    public void onSelectItemListener(int position) {
+        listView.setItemChecked(position, !presenter.isPositionChecked(position));
     }
 }

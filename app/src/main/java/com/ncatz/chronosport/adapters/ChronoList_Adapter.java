@@ -13,14 +13,18 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.ncatz.chronosport.R;
 import com.ncatz.chronosport.model.ChronoElement;
+import com.ncatz.chronosport.other.MultiChoiceListener;
 import com.ncatz.chronosport.utils.ViewAnimationUtils;
 import com.ncatz.chronosport.model.Chrono;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by yeray697 on 4/02/17.
@@ -29,6 +33,7 @@ import java.util.List;
 public class ChronoList_Adapter extends ArrayAdapter<Chrono> {
 
     private OnPlayListener onPlayListener;
+    private MultiChoiceListener.OnSelectItemListener onSelectItemListener;
 
     public ChronoList_Adapter(Context context, List<Chrono> objects) {
         super(context, R.layout.chronolist_item, objects);
@@ -40,7 +45,7 @@ public class ChronoList_Adapter extends ArrayAdapter<Chrono> {
 
     @NonNull
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
         final ChronoHolder holder;
         View view = convertView;
         if (view == null) {
@@ -55,17 +60,28 @@ public class ChronoList_Adapter extends ArrayAdapter<Chrono> {
         //holder.tvTime.setText();
         holder.tvRepetitions.setText("Repetitions: " + chrono.getRepetitions());
 
-        holder.root.setOnClickListener(new View.OnClickListener() {
+        holder.rlHead.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int rotation = 180;
-                if (chrono.isExpanded()) {
-                    rotation = 0;
-                    ViewAnimationUtils.collapse(holder.rlBody,200);
-                } else
-                    ViewAnimationUtils.expand(holder.rlBody,200);
-                chrono.invertExpand();
-                holder.btExpandCollapse.animate().rotation(rotation).start();
+                if (selectedItemsCount() == 0) {
+                    int rotation = 180;
+                    if (chrono.isExpanded()) {
+                        rotation = 0;
+                        ViewAnimationUtils.collapse(holder.rlBody, 200);
+                    } else
+                        ViewAnimationUtils.expand(holder.rlBody, 200);
+                    chrono.invertExpand();
+                    holder.btExpandCollapse.animate().rotation(rotation).start();
+                } else {
+                    if (onSelectItemListener != null)
+                        onSelectItemListener.onClick(position);
+                }
+            }
+        });
+        holder.rlHead.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                return false;
             }
         });
         if (chrono.isExpanded()) {
@@ -82,8 +98,13 @@ public class ChronoList_Adapter extends ArrayAdapter<Chrono> {
         holder.btPlay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (onPlayListener != null){
-                    onPlayListener.onPlay(chrono);
+                if (selectedItemsCount() == 0) {
+                    if (onPlayListener != null){
+                        onPlayListener.onPlay(chrono);
+                    }
+                } else {
+                    if (onSelectItemListener != null)
+                        onSelectItemListener.onClick(position);
                 }
             }
         });
@@ -132,5 +153,45 @@ public class ChronoList_Adapter extends ArrayAdapter<Chrono> {
 
     public void setOnPlayListener(OnPlayListener onPlayListener) {
         this.onPlayListener = onPlayListener;
+    }
+
+    public void setOnSelectItemListener(MultiChoiceListener.OnSelectItemListener listener){
+        this.onSelectItemListener = listener;
+    }
+
+
+
+
+
+
+
+    private HashMap<Integer, Boolean> mSelection = new HashMap<Integer, Boolean>();
+
+    public void setSelected(int position, boolean value) {
+        mSelection.put(position, value);
+        notifyDataSetChanged();
+    }
+
+    public int selectedItemsCount(){
+        return mSelection.size();
+    }
+
+    public boolean isPositionChecked(int position) {
+        Boolean result = mSelection.get(position);
+        return result == null ? false : result;
+    }
+
+    public Set<Integer> getCurrentCheckedPosition() {
+        return mSelection.keySet();
+    }
+
+    public void removeSelection(int position) {
+        mSelection.remove(position);
+        notifyDataSetChanged();
+    }
+
+    public void clearSelection() {
+        mSelection = new HashMap<Integer, Boolean>();
+        notifyDataSetChanged();
     }
 }

@@ -2,4 +2,7 @@
     <string name="app_name">ChronoSport</string>
     <string name="repetitions">Repeticiones</string>
     <string name="time">Tiempo</string>
+    <string name="action_delete_title">Eliminar</string>
+    <string name="action_duplicate_title">Duplicar</string>
+
 </resources>
