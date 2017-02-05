@@ -36,7 +36,7 @@ public class ChronoSubList_Adapter extends RecyclerView.Adapter<ChronoSubList_Ad
         holder.tvNumber.setText(String.valueOf(holder.getAdapterPosition()+1));
         holder.tvName.setText(element.getName());
         if (element instanceof ChronoTimeElement) {
-            int timeAux = ((ChronoTimeElement)element).getTime();
+            int timeAux = ((ChronoTimeElement)element).getTime()/1000;
             String time = (timeAux / 60) + ":" + (timeAux % 60);
             holder.tvTime.setText(time);
         } else {

@@ -1,34 +1,23 @@
 package com.ncatz.chronosport.fragments;
 
 import android.app.Activity;
-import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Parcelable;
+import android.support.annotation.IntegerRes;
 import android.support.annotation.Nullable;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.view.ActionMode;
+import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.ncatz.chronosport.Home_Activity;
 import com.ncatz.chronosport.R;
-import com.ncatz.chronosport.custom_widgets.ChronoWidget;
-import com.ncatz.chronosport.adapters.ChronoList_Adapter;
 import com.ncatz.chronosport.interfaces.IChronoList;
 import com.ncatz.chronosport.interfaces.ManageFragmentCallback;
 import com.ncatz.chronosport.model.Chrono;
-import com.ncatz.chronosport.model.ChronoElement;
-import com.ncatz.chronosport.model.ChronoRepetitionElement;
-import com.ncatz.chronosport.model.ChronoTimeElement;
 import com.ncatz.chronosport.other.MultiChoiceListener;
 import com.ncatz.chronosport.presenters.ChronoList_Presenter;
 
@@ -44,9 +33,12 @@ public class ChronoList_Fragment extends Fragment implements IChronoList.View{
 
     private IChronoList presenter;
     private ManageFragmentCallback mCallback;
+    private String STATE_LIST_KEY = "list_key";
+    private String SELECTED_KEY = "selected_key";
+    private MultiChoiceListener multiChoiceListener;
 
     public ChronoList_Fragment(){
-
+        setRetainInstance(true);
     }
 
     public static ChronoList_Fragment newFragment(){
@@ -57,7 +49,12 @@ public class ChronoList_Fragment extends Fragment implements IChronoList.View{
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        presenter = new ChronoList_Presenter(this);
+        if (savedInstanceState != null){
+            ArrayList<Chrono> list = savedInstanceState.getParcelableArrayList(STATE_LIST_KEY);
+            presenter = new ChronoList_Presenter(this,list);
+        }
+        else
+            presenter = new ChronoList_Presenter(this);
         /*presenter.setOnAdapterClickListener(new IChronoList.OnAdapterClickListener() {
             @Override
             public void onPlayListener(Chrono clickedChrono) {
@@ -88,11 +85,18 @@ public class ChronoList_Fragment extends Fragment implements IChronoList.View{
         super.onViewCreated(view, savedInstanceState);
 
         setMultiChoiceModeListView();
+        //if (savedInstanceState != null) {
+        //    ArrayList <Integer> selected = savedInstanceState.getIntegerArrayList(SELECTED_KEY);
+        //    if (selected != null && selected.size()>0){
+        //        for (int i = 0; i < selected.size(); i++) {
+        //            listView.setItemChecked(selected.get(i),true);
+        //        }
+        //    }
+        //}
     }
 
     private void setMultiChoiceModeListView() {
-        listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
-        MultiChoiceListener multiChoiceListener = new MultiChoiceListener(presenter);
+        multiChoiceListener = new MultiChoiceListener(presenter);
         listView.setMultiChoiceModeListener(multiChoiceListener);
         listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
 
@@ -129,5 +133,27 @@ public class ChronoList_Fragment extends Fragment implements IChronoList.View{
     @Override
     public void onSelectItemListener(int position) {
         listView.setItemChecked(position, !presenter.isPositionChecked(position));
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelableArrayList(STATE_LIST_KEY, presenter.getAdapter().getList());
+        outState.putIntegerArrayList(SELECTED_KEY,getSelectedItems());
+
+        multiChoiceListener.onDestroyActionMode(null);
+    }
+
+    private ArrayList<Integer> getSelectedItems() {
+        ArrayList<Integer> selected = new ArrayList<>();
+        int len = listView.getCount();
+        SparseBooleanArray checked = listView.getCheckedItemPositions();
+        for(int i=0; i<checked.size(); i++){
+            int key = checked.keyAt(i);
+            if (checked.get(key)){
+                selected.add(key);
+            }
+        }
+        return selected;
     }
 }

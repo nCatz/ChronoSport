@@ -8,6 +8,8 @@ import android.widget.AbsListView;
 import com.ncatz.chronosport.R;
 import com.ncatz.chronosport.interfaces.IChronoList;
 
+import java.util.ArrayList;
+
 /**
  * Created by yeray697 on 5/02/17.
  */

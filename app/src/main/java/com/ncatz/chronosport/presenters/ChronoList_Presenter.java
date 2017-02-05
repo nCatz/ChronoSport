@@ -2,11 +2,13 @@ package com.ncatz.chronosport.presenters;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.v4.app.Fragment;
 import android.widget.ListAdapter;
 
 import com.ncatz.chronosport.Home_Activity;
 import com.ncatz.chronosport.adapters.ChronoList_Adapter;
+import com.ncatz.chronosport.fragments.ChronoList_Fragment;
 import com.ncatz.chronosport.interfaces.IChronoList;
 import com.ncatz.chronosport.model.Chrono;
 import com.ncatz.chronosport.model.ChronoElement;
@@ -26,9 +28,30 @@ public class ChronoList_Presenter implements IChronoList{
 
     //private IChronoList.OnAdapterClickListener onAdapterClickListener;
 
-    public ChronoList_Presenter(final IChronoList.View view) {
-        this.view = view;
+    public ChronoList_Presenter(IChronoList.View chronoView) {
+        this.view = chronoView;
         adapter = new ChronoList_Adapter(((Fragment)view).getContext(),getDefaultItems());
+        adapter.setOnPlayListener(new ChronoList_Adapter.OnPlayListener() {
+            @Override
+            public void onPlay(Chrono clickedChrono) {
+                view.onPlayListener(clickedChrono);
+                /*if (onAdapterClickListener != null)
+                    onAdapterClickListener.onPlayListener(clickedChrono);*/
+            }
+        });
+        adapter.setOnSelectItemListener(new MultiChoiceListener.OnSelectItemListener() {
+            @Override
+            public void onClick(int position) {
+                view.onSelectItemListener(position);
+                /*if (onAdapterClickListener != null)
+                    onAdapterClickListener.onSelectItemListener(position);*/
+            }
+        });
+    }
+
+    public ChronoList_Presenter(final IChronoList.View view, ArrayList<Chrono> parcelableArrayList) {
+        this.view = view;
+        adapter = new ChronoList_Adapter(((Fragment)view).getContext(),parcelableArrayList);
         adapter.setOnPlayListener(new ChronoList_Adapter.OnPlayListener() {
             @Override
             public void onPlay(Chrono clickedChrono) {

@@ -1,6 +1,7 @@
 package com.ncatz.chronosport.adapters;
 
 import android.content.Context;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
@@ -37,6 +38,14 @@ public class ChronoList_Adapter extends ArrayAdapter<Chrono> {
 
     public ChronoList_Adapter(Context context, List<Chrono> objects) {
         super(context, R.layout.chronolist_item, objects);
+    }
+
+    public ArrayList<Chrono> getList() {
+        ArrayList<Chrono> list = new ArrayList<>();
+        for(int i=0 ; i<this.getCount() ; i++){
+            list.add(this.getItem(i));
+        }
+        return list;
     }
 
     public interface OnPlayListener{
