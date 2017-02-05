@@ -59,8 +59,13 @@ public class Home_Activity extends AppCompatActivity implements ManageFragmentCa
             }
         }
         ft.replace(R.id.fl_frameHome, fragment,tag);
-        if (!tag.equals(CHRONO_LIST_TAG) && !currentFragmentTag.equals(tag))
-            ft.addToBackStack(null);
+        int index = fragmentManager.getBackStackEntryCount() - 1;
+        FragmentManager.BackStackEntry backEntry = null;
+        if (index>=0)
+            backEntry = fragmentManager.getBackStackEntryAt(index);
+        boolean stack = index == -1 || (index >= 0 && !backEntry.getName().equals(tag));
+        if (!tag.equals(CHRONO_LIST_TAG) && stack)
+            ft.addToBackStack(tag);
         ft.commit();
         currentFragmentTag = tag;
     }
