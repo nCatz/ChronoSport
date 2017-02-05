@@ -6,28 +6,28 @@ import android.view.MenuItem;
 import android.widget.AbsListView;
 
 import com.ncatz.chronosport.R;
-import com.ncatz.chronosport.adapters.ChronoList_Adapter;
+import com.ncatz.chronosport.interfaces.IChronoList;
 
 /**
  * Created by yeray697 on 5/02/17.
  */
 
 public class MultiChoiceListener implements AbsListView.MultiChoiceModeListener {
-    private ChronoList_Adapter adapter;
+    private IChronoList presenter;
     private int nr = 0;
 
-    public MultiChoiceListener(ChronoList_Adapter adapter) {
-        this.adapter = adapter;
+    public MultiChoiceListener(IChronoList presenter) {
+        this.presenter = presenter;
     }
 
     @Override
     public void onItemCheckedStateChanged(ActionMode mode, int position, long id, boolean checked) {
         if (checked) {
             nr++;
-            adapter.setNewSelection(position, checked);
+            presenter.setSelected(position, checked);
         } else {
             nr--;
-            adapter.removeSelection(position);
+            presenter.removeSelection(position);
         }
         mode.setTitle(nr + " selected");
     }
@@ -50,7 +50,7 @@ public class MultiChoiceListener implements AbsListView.MultiChoiceModeListener 
 
             case R.id.action_delete:
                 nr = 0;
-                adapter.clearSelection();
+                presenter.clearSelection();
                 mode.finish();
         }
         return false;
@@ -58,7 +58,7 @@ public class MultiChoiceListener implements AbsListView.MultiChoiceModeListener 
 
     @Override
     public void onDestroyActionMode(ActionMode mode) {
-        adapter.clearSelection();
+        presenter.clearSelection();
         nr = 0;
     }
 

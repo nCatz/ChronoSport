@@ -98,8 +98,13 @@ public class ChronoList_Adapter extends ArrayAdapter<Chrono> {
         holder.btPlay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (onPlayListener != null){
-                    onPlayListener.onPlay(chrono);
+                if (selectedItemsCount() == 0) {
+                    if (onPlayListener != null){
+                        onPlayListener.onPlay(chrono);
+                    }
+                } else {
+                    if (onSelectItemListener != null)
+                        onSelectItemListener.onClick(position);
                 }
             }
         });
@@ -160,7 +165,7 @@ public class ChronoList_Adapter extends ArrayAdapter<Chrono> {
 
     private HashMap<Integer, Boolean> mSelection = new HashMap<Integer, Boolean>();
 
-    public void setNewSelection(int position, boolean value) {
+    public void setSelected(int position, boolean value) {
         mSelection.put(position, value);
         notifyDataSetChanged();
     }
