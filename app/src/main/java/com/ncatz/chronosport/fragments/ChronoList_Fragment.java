@@ -8,9 +8,14 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.ActionMode;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -24,6 +29,7 @@ import com.ncatz.chronosport.model.Chrono;
 import com.ncatz.chronosport.model.ChronoElement;
 import com.ncatz.chronosport.model.ChronoRepetitionElement;
 import com.ncatz.chronosport.model.ChronoTimeElement;
+import com.ncatz.chronosport.other.MultiChoiceListener;
 import com.ncatz.chronosport.presenters.ChronoList_Presenter;
 
 import java.util.ArrayList;
@@ -62,6 +68,12 @@ public class ChronoList_Fragment extends Fragment implements IChronoList.View{
                 mCallback.swapFragment(Home_Activity.CHRONO_PLAYER_TAG,args);
             }
         });
+        adapter.setOnSelectItemListener(new MultiChoiceListener.OnSelectItemListener() {
+            @Override
+            public void onClick(int position) {
+                listView.setItemChecked(position, !adapter.isPositionChecked(position));
+            }
+        });
     }
 
     @Nullable
@@ -71,8 +83,31 @@ public class ChronoList_Fragment extends Fragment implements IChronoList.View{
 
         listView = (ListView) rootView.findViewById(R.id.lvChronoList);
         listView.setAdapter(adapter);
-
         return rootView;
+    }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        setMultiChoiceModeListView();
+    }
+
+    private void setMultiChoiceModeListView() {
+        listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
+        MultiChoiceListener multiChoiceListener = new MultiChoiceListener(adapter);
+        listView.setMultiChoiceModeListener(multiChoiceListener);
+        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+
+            @Override
+            public boolean onItemLongClick(AdapterView<?> arg0, View arg1,
+                                           int position, long arg3) {
+                // TODO Auto-generated method stub
+
+                listView.setItemChecked(position, !adapter.isPositionChecked(position));
+                return true;
+            }
+        });
     }
 
     @Override

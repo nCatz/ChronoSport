@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">ChronoSport</string>
+    <string name="action_delete_title">Eliminar</string>
+    <string name="action_duplicate_title">Duplicar</string>
 </resources>
