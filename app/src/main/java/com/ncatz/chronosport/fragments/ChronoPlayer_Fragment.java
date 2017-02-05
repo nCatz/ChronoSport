@@ -69,6 +69,7 @@ public class ChronoPlayer_Fragment extends Fragment implements IChronoPlayer.Vie
         limit = chrono.getRepetitions();
         recyclerView = (RecyclerView)rootView.findViewById(R.id.recycler);
         recyclerView.setItemAnimator(new SlideInLeftAnimator());
+        recyclerView.getItemAnimator().setRemoveDuration(1000);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         presenter = new  ChronoPlayer_Presenter(this, chrono.getElements(), limit);
         return rootView;
@@ -127,7 +128,7 @@ public class ChronoPlayer_Fragment extends Fragment implements IChronoPlayer.Vie
         }
         super.onDetach();
     }
-    
+
     @Override
     public void setDisableChronoButtons() {
 
