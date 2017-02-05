@@ -86,6 +86,11 @@ public class ChronoPlayer_Adapter extends RecyclerView.Adapter <ChronoPlayer_Ada
         callBack.onRemoveElement();
     }
 
+    public List<ChronoElement> getList(){
+
+        return list;
+    }
+
     public void addItem(ChronoElement element){
 
         list.add(0, element);

@@ -41,9 +41,11 @@ public class ChronoPlayer_Presenter implements ChronoPlayer_Adapter.IAdapterComu
 
             }
 
-            view.setAdapter(adapter);
+
             view.setElementForChrono(adapter.getItem(0));
         }
+
+        view.setAdapter(adapter);
     }
 
 

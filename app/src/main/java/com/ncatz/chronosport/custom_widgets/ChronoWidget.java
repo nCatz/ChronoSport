@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.CountDownTimer;
+import android.os.Parcelable;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.View;
@@ -38,6 +39,7 @@ public class ChronoWidget extends RelativeLayout {
     private CircleProgressView progressBar;
     private ImageButton btnStartPause, btnNext;
     private IChronoActionListener callBack;
+    private int actualTime;
     private ChronoThread.IChronoIteractionListener listener = new ChronoThread.IChronoIteractionListener() {
         @Override
         public void onStart() {
@@ -46,8 +48,9 @@ public class ChronoWidget extends RelativeLayout {
         }
 
         @Override
-        public void onTick(final int actualTime) {
+        public void onTick(final int actualTimes) {
 
+            actualTime = actualTimes;
             final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("mm:ss");
            ((Activity)getContext()).runOnUiThread(new Runnable() {
                 @Override
@@ -75,7 +78,15 @@ public class ChronoWidget extends RelativeLayout {
         }
     };
 
+    public void setValueProgress(int valueProgress){
 
+        progressBar.setValue(valueProgress);
+    }
+
+    @Override
+    protected Parcelable onSaveInstanceState() {
+        return super.onSaveInstanceState();
+    }
 
     public interface IChronoActionListener extends ChronoThread.IChronoIteractionListener{
 
@@ -84,13 +95,24 @@ public class ChronoWidget extends RelativeLayout {
         void onButtonStartPauseCliked();
     }
 
+    public int getActualTime() {
+        return actualTime;
+    }
+
+    public void setActualTime(int actualTime) {
+        this.actualTime = actualTime;
+    }
+
     public ChronoWidget(Context context, AttributeSet attrs) {
         super(context, attrs);
         ((Activity)context).getLayoutInflater().inflate(R.layout.mixer_chrono,this,true);
         setGravity(Gravity.CENTER);
+        actualTime = 0;
+
         textView = (TextView)findViewById(R.id.chronoText);
         textView.setText("00:00");
         progressBar = (CircleProgressView) findViewById(R.id.progress);
+        progressBar.setShowBlock(true);
         btnStartPause = (ImageButton)findViewById(R.id.btnStartPause);
         btnNext = (ImageButton)findViewById(R.id.btnNext);
 
@@ -177,6 +199,28 @@ public class ChronoWidget extends RelativeLayout {
         textView.setVisibility(visible?VISIBLE:GONE);
     }
 
+
+    public void onButtonStartClick(){
+
+        btnStartPause.callOnClick();
+    }
+
+    public void restoreChrono(int maxValue, int actualTimes, int interval){
+
+        if(chronoThread != null){
+
+            chronoThread.stopChrono();
+            chronoThread = null;
+        }
+
+        actualTime = actualTimes;
+        chronoThread = new ChronoThread(actualTimes, interval);
+        chronoThread.setChronoListener(listener);
+        chronoThread.startChrono();
+        progressBar.setValue(actualTimes);
+        progressBar.setMaxValue(maxValue);
+    }
+
     public void setOnChronoListener(IChronoActionListener listener){
 
         this.callBack = listener;
@@ -184,6 +228,7 @@ public class ChronoWidget extends RelativeLayout {
 
     public void activateChrono(int time, int interval){
 
+        actualTime = time + 1000;
         chronoThread = new ChronoThread(time+1000, interval);
         chronoThread.setChronoListener(listener);
         chronoThread.startChrono();

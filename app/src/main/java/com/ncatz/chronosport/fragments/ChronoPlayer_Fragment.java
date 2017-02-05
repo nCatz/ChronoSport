@@ -1,6 +1,7 @@
 package com.ncatz.chronosport.fragments;
 
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -21,6 +22,8 @@ import com.ncatz.chronosport.model.ChronoRepetitionElement;
 import com.ncatz.chronosport.model.ChronoTimeElement;
 import com.ncatz.chronosport.presenters.ChronoPlayer_Presenter;
 
+import java.util.ArrayList;
+
 import jp.wasabeef.recyclerview.animators.SlideInLeftAnimator;
 
 /**
@@ -37,8 +40,13 @@ public class ChronoPlayer_Fragment extends Fragment implements IChronoPlayer.Vie
     private ChronoPlayer_Presenter presenter;
     private ChronoElement actualElement;
     private boolean active;
+    private boolean restored;
+    private int maxTime;
     private final int INTERVAL = 1000;
     private int limit;
+    private static final String RECOVERY_TIME = "time";
+    private static final String RECOVERY_MAX_TIME = "max_time";
+    private static final String RECOVERY_LIST = "list";
 
     public ChronoPlayer_Fragment(){
 
@@ -54,7 +62,20 @@ public class ChronoPlayer_Fragment extends Fragment implements IChronoPlayer.Vie
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        setRetainInstance(true);
+
+    }
+
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+
+        chronoWidget.destroyChrono();
+        outState.putInt(RECOVERY_TIME, chronoWidget.getActualTime());
+        outState.putInt(RECOVERY_MAX_TIME, maxTime);
+        outState.putParcelableArrayList(RECOVERY_LIST, (ArrayList<? extends Parcelable>) adapter.getList());
+        chronoWidget = null;
+        super.onSaveInstanceState(outState);
+
     }
 
     @Nullable
@@ -62,16 +83,35 @@ public class ChronoPlayer_Fragment extends Fragment implements IChronoPlayer.Vie
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         View rootView = inflater.inflate(R.layout.chronoplayer_fragment,container,false);
-        chrono = getArguments().getParcelable(Home_Activity.CHRONO_ARGS_KEY);
         chronoWidget = (ChronoWidget)rootView.findViewById(R.id.chrono);
         active = false;
+        restored = false;
         registerChronoEvents();
-        limit = chrono.getRepetitions();
         recyclerView = (RecyclerView)rootView.findViewById(R.id.recycler);
         recyclerView.setItemAnimator(new SlideInLeftAnimator());
         recyclerView.getItemAnimator().setRemoveDuration(1000);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        presenter = new  ChronoPlayer_Presenter(this, chrono.getElements(), limit);
+        if(getArguments() != null) {
+
+            chrono = getArguments().getParcelable(Home_Activity.CHRONO_ARGS_KEY);
+            limit = chrono.getRepetitions();
+            presenter = new ChronoPlayer_Presenter(this, chrono.getElements(), limit);
+        }
+
+        if(savedInstanceState != null){
+
+            adapter.clearItems();
+            adapter.addAllItems(savedInstanceState.<ChronoElement>getParcelableArrayList(RECOVERY_LIST));
+            int time = savedInstanceState.getInt(RECOVERY_TIME);
+
+            if(time > 0){
+
+                restored = true;
+                chronoWidget.restoreChrono(maxTime, time, INTERVAL);
+                chronoWidget.onButtonStartClick();
+                restored = false;
+            }
+        }
         return rootView;
     }
 
@@ -95,7 +135,7 @@ public class ChronoPlayer_Fragment extends Fragment implements IChronoPlayer.Vie
             @Override
             public void onButtonStartPauseCliked() {
 
-                if(!active){
+                if(!active && !restored){
 
                     startChrono(((ChronoTimeElement)actualElement).getTime());
                 }
@@ -114,7 +154,7 @@ public class ChronoPlayer_Fragment extends Fragment implements IChronoPlayer.Vie
             @Override
             public void onFinish() {
                 active = false;
-              removeItem();
+               removeItem();
             }
         });
     }
@@ -125,7 +165,9 @@ public class ChronoPlayer_Fragment extends Fragment implements IChronoPlayer.Vie
         if(chronoWidget != null){
 
             chronoWidget.destroyChrono();
+            chronoWidget = null;
         }
+
         super.onDetach();
     }
 
@@ -160,6 +202,7 @@ public class ChronoPlayer_Fragment extends Fragment implements IChronoPlayer.Vie
 
             if(element instanceof ChronoTimeElement){
 
+                maxTime = ((ChronoTimeElement) element).getTime();
                 chronoWidget.setVisivilityForButtonStart(true);
                 chronoWidget.setVisivilityForButtonNext(false);
                 chronoWidget.setTimeVisible(true);
