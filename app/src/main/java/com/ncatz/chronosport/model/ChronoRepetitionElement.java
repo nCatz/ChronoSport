@@ -15,7 +15,7 @@ public class ChronoRepetitionElement extends ChronoElement {
         this.repetitions = repetitions;
     }
 
-    private ChronoRepetitionElement(Parcel in) {
+    ChronoRepetitionElement(Parcel in) {
         super(in);
         repetitions = in.readInt();
     }
@@ -43,6 +43,7 @@ public class ChronoRepetitionElement extends ChronoElement {
     }
 
     public void writeToParcel(Parcel out, int flags) {
+        out.writeInt(ChronoElement.CLASS_TYPE_REPETITION);
         super.writeToParcel(out, flags);
         out.writeInt(repetitions);
     }

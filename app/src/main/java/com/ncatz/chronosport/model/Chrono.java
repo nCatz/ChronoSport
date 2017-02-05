@@ -11,8 +11,8 @@ import java.util.List;
  */
 
 public class Chrono implements Parcelable{
-    private final int MIN_REPETITIONS = 1;
-    private final int MAX_ELEMENTS = 20;
+    private static final int MIN_REPETITIONS = 1;
+    private static final int MAX_ELEMENTS = 20;
 
     private int id;
     private String name;
@@ -31,8 +31,6 @@ public class Chrono implements Parcelable{
     }
 
     protected Chrono(Parcel in) {
-        MIN_REPETITIONS = in.readInt();
-        MAX_ELEMENTS = in.readInt();
         id = in.readInt();
         name = in.readString();
         elements = in.createTypedArrayList(ChronoElement.CREATOR);
@@ -166,8 +164,6 @@ public class Chrono implements Parcelable{
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeInt(MIN_REPETITIONS);
-        dest.writeInt(MAX_ELEMENTS);
         dest.writeInt(id);
         dest.writeString(name);
         dest.writeTypedList(elements);

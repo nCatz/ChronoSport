@@ -15,7 +15,7 @@ public class ChronoTimeElement extends ChronoElement {
         this.time = time;
     }
 
-    private ChronoTimeElement(Parcel in) {
+    ChronoTimeElement(Parcel in) {
         super(in);
         time = in.readInt();
     }
@@ -43,6 +43,7 @@ public class ChronoTimeElement extends ChronoElement {
     }
 
     public void writeToParcel(Parcel out, int flags) {
+        out.writeInt(ChronoElement.CLASS_TYPE_TIMER);
         super.writeToParcel(out, flags);
         out.writeInt(time);
     }

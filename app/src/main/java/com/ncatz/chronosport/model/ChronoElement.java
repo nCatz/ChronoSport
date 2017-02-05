@@ -8,6 +8,10 @@ import android.os.Parcelable;
  */
 
 public abstract class ChronoElement implements Parcelable{
+
+    public static final int CLASS_TYPE_TIMER = 1;
+    public static final int CLASS_TYPE_REPETITION = 2;
+
     private int id;
     private String name;
 
@@ -39,5 +43,29 @@ public abstract class ChronoElement implements Parcelable{
     public void writeToParcel(Parcel out, int flags) {
         out.writeInt(id);
         out.writeString(name);
+    }
+
+    public static final Creator<ChronoElement> CREATOR = new Creator<ChronoElement>() {
+        @Override
+        public ChronoElement createFromParcel(Parcel source) {
+
+            return ChronoElement.getConcreteClass(source);
+        }
+
+        @Override
+        public ChronoElement[] newArray(int size) {
+            return new ChronoElement[size];
+        }
+    };
+
+    private static ChronoElement getConcreteClass(Parcel source) {
+        switch (source.readInt()) {
+            case CLASS_TYPE_TIMER:
+                return new ChronoTimeElement(source);
+            case CLASS_TYPE_REPETITION:
+                return new ChronoRepetitionElement(source);
+            default:
+                return null;
+        }
     }
 }

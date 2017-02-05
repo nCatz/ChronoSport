@@ -7,13 +7,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.ncatz.chronosport.Home_Activity;
 import com.ncatz.chronosport.R;
+import com.ncatz.chronosport.model.Chrono;
 
 /**
  * Created by yeray697 on 4/02/17.
  */
 
 public class ChronoPlayer_Fragment extends Fragment {
+
+    private Chrono chrono;
 
     public ChronoPlayer_Fragment(){
 
@@ -29,7 +33,7 @@ public class ChronoPlayer_Fragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.chronoplayer_fragment,container,false);
-
+        chrono = getArguments().getParcelable(Home_Activity.CHRONO_ARGS_KEY);
         return rootView;
     }
 }
