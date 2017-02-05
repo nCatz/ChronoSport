@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">ChronoSport</string>
+    <string name="repetitions">Repeticiones</string>
+    <string name="time">Tiempo</string>
 </resources>

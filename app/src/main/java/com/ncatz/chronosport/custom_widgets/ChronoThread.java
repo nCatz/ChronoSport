@@ -49,6 +49,8 @@ public class ChronoThread extends Thread{
     public void stopChrono(){
 
         interrupt();
+        actualTime = 0;
+        paused = true;
     }
 
     public int getTotalTime() {

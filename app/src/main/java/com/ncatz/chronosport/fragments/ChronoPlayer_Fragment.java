@@ -3,21 +3,42 @@ package com.ncatz.chronosport.fragments;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.ncatz.chronosport.Home_Activity;
 import com.ncatz.chronosport.R;
+import com.ncatz.chronosport.adapters.ChronoPlayer_Adapter;
+import com.ncatz.chronosport.custom_widgets.ChronoWidget;
+import com.ncatz.chronosport.interfaces.IChronoPlayer;
 import com.ncatz.chronosport.model.Chrono;
+import com.ncatz.chronosport.model.ChronoElement;
+import com.ncatz.chronosport.model.ChronoRepetitionElement;
+import com.ncatz.chronosport.model.ChronoTimeElement;
+import com.ncatz.chronosport.presenters.ChronoPlayer_Presenter;
+
+import jp.wasabeef.recyclerview.animators.SlideInLeftAnimator;
 
 /**
  * Created by yeray697 on 4/02/17.
  */
 
-public class ChronoPlayer_Fragment extends Fragment {
+public class ChronoPlayer_Fragment extends Fragment implements IChronoPlayer.View
+{
 
     private Chrono chrono;
+    private ChronoPlayer_Adapter adapter;
+    private RecyclerView recyclerView;
+    private ChronoWidget chronoWidget;
+    private ChronoPlayer_Presenter presenter;
+    private TextView txvTitle;
+    private int lastShowPosition = 0;
+    private final int INTERVAL = 1000;
+    private int limit;
 
     public ChronoPlayer_Fragment(){
 
@@ -34,6 +55,95 @@ public class ChronoPlayer_Fragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.chronoplayer_fragment,container,false);
         chrono = getArguments().getParcelable(Home_Activity.CHRONO_ARGS_KEY);
+        chronoWidget = (ChronoWidget)rootView.findViewById(R.id.chrono);
+        registerChronoEvents();
+        limit = chrono.getRepetitions();
+        txvTitle = (TextView)rootView.findViewById(R.id.txvTitle);
+        recyclerView = (RecyclerView)rootView.findViewById(R.id.recycler);
+        recyclerView.setItemAnimator(new SlideInLeftAnimator());
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        presenter = new  ChronoPlayer_Presenter(this, chrono.getElements(), limit);
+        adapter = new ChronoPlayer_Adapter(getContext());
+        recyclerView.setAdapter(adapter);
         return rootView;
+    }
+
+
+    private void registerChronoEvents(){
+
+        chronoWidget.setOnChronoListener(new ChronoWidget.IChronoActionListener() {
+            @Override
+            public void onNextButtonCliked() {
+
+                presenter.indicateElement(lastShowPosition);
+            }
+
+            @Override
+            public void onStart() {
+
+            }
+
+            @Override
+            public void onTick(int actualTime) {
+
+            }
+
+            @Override
+            public void onFinish() {
+
+                presenter.indicateElement(lastShowPosition);
+            }
+        });
+    }
+
+
+
+
+    @Override
+    public void onDetach() {
+
+        if(chronoWidget != null){
+
+            chronoWidget.destroyChrono();
+        }
+        super.onDetach();
+    }
+
+    @Override
+    public void setTitleForChrono(String title) {
+
+        txvTitle.setText(chrono.getName()+" "+title);
+    }
+
+    @Override
+    public void setDisableChronoButtons() {
+
+        chronoWidget.disableButtons();
+    }
+
+    @Override
+    public void setElementForChrono(ChronoElement element) {
+
+        if(element != null){
+
+            adapter.addItem(element);
+
+            if(element instanceof ChronoTimeElement){
+
+                startChrono(((ChronoTimeElement) element).getTime());
+
+            }else {
+
+                chronoWidget.setVisivilityForButtonStart(false);
+            }
+
+            lastShowPosition = chrono.getElements().indexOf(element);
+        }
+    }
+
+    @Override
+    public void startChrono(int time) {
+
+        chronoWidget.activateChrono(time, INTERVAL);
     }
 }

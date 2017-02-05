@@ -1,9 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
+    xmlns:chrono="http://schemas.android.com/apk/res-auto"
     android:layout_height="match_parent">
-    <com.ncatz.chronosport.custom_widgets.ChronoWidget
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"></com.ncatz.chronosport.custom_widgets.ChronoWidget>
 
-</LinearLayout>
+
+    <TextView
+        android:layout_centerHorizontal="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textColor="@android:color/black"
+        android:id="@+id/txvTitle"
+        />
+
+    <com.ncatz.chronosport.custom_widgets.ChronoWidget
+        android:layout_below="@+id/txvTitle"
+        android:id="@+id/chrono"
+        chrono:background_progress_color="@android:color/darker_gray"
+        chrono:bar_progress_color="@android:color/holo_red_dark"
+        chrono:shape_buttons="@drawable/round_button"
+        chrono:time_color="@android:color/holo_green_dark"
+        android:layout_width="match_parent"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="10dp"
+        android:layout_height="wrap_content">
+
+    </com.ncatz.chronosport.custom_widgets.ChronoWidget>
+
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycler"
+        android:layout_below="@+id/chrono"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    </android.support.v7.widget.RecyclerView>
+
+</RelativeLayout>

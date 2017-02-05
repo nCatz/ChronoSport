@@ -90,6 +90,8 @@ public class ChronoList_Adapter extends ArrayAdapter<Chrono> {
         return view;
     }
 
+
+
     class ChronoHolder{
         View root;
         RelativeLayout rlHead,rlBody;

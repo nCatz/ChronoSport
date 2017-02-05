@@ -2,8 +2,10 @@ package com.ncatz.chronosport.custom_widgets;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.os.CountDownTimer;
 import android.util.AttributeSet;
 import android.view.Gravity;
@@ -85,15 +87,18 @@ public class ChronoWidget extends RelativeLayout {
             @Override
             public void onClick(View view) {
 
-                if(chronoThread.isPaused()){
+                if(chronoThread != null) {
 
-                    chronoThread.setPaused(false);
-                    btnStartPause.setImageResource(android.R.drawable.ic_media_pause);
+                    if (chronoThread.isPaused()) {
 
-                }else {
+                        chronoThread.setPaused(false);
+                        btnStartPause.setImageResource(android.R.drawable.ic_media_pause);
 
-                    chronoThread.setPaused(true);
-                    btnStartPause.setImageResource(android.R.drawable.ic_media_play);
+                    } else {
+
+                        chronoThread.setPaused(true);
+                        btnStartPause.setImageResource(android.R.drawable.ic_media_play);
+                    }
                 }
 
             }
@@ -107,6 +112,44 @@ public class ChronoWidget extends RelativeLayout {
                 throwOnNextButtonCliked();
             }
         });
+
+        if(attrs != null){
+
+            TypedArray typedArray = getContext().obtainStyledAttributes(attrs,R.styleable.ChronoWidget);
+            setShapeButtons(typedArray.getDrawable(R.styleable.ChronoWidget_shape_buttons));
+            setRimColor(typedArray.getColor(R.styleable.ChronoWidget_bar_progress_color, Color.BLUE));
+            setBackProgressColor(typedArray.getColor(R.styleable.ChronoWidget_background_progress_color, Color.YELLOW));
+            setTimeColor(typedArray.getColor(R.styleable.ChronoWidget_time_color, Color.BLACK));
+            typedArray.recycle();
+        }
+    }
+
+
+    public void disableButtons(){
+
+        btnStartPause.setVisibility(GONE);
+        btnNext.setVisibility(GONE);
+    }
+
+    public void setVisivilityForButtonStart(boolean visibility){
+
+        btnStartPause.setVisibility( visibility ? VISIBLE:GONE);
+    }
+
+    public void setShapeButtons(Drawable drawable){
+
+        btnNext.setBackground(drawable);
+        btnStartPause.setBackground(drawable);
+    }
+
+    public void setBackProgressColor(int color){
+
+        progressBar.setBarColor(color);
+    }
+
+    public void setRimColor(int color){
+
+        progressBar.setRimColor(color);
     }
 
     public void setOnChronoListener(IChronoActionListener listener){
@@ -161,7 +204,12 @@ public class ChronoWidget extends RelativeLayout {
         }
     }
 
+    public void destroyChrono(){
 
+        if(chronoThread != null){
 
+            chronoThread.stopChrono();
+        }
+    }
 
 }

@@ -1,2 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+
+    <declare-styleable name="ChronoWidget">
+
+        <attr name="time_color" format="color"  />
+        <attr name="bar_progress_color" format="color"  />
+        <attr name="background_progress_color" format="color"  />
+        <attr name="shape_buttons" format="reference"  />
+
+    </declare-styleable>
+
+</resources>
