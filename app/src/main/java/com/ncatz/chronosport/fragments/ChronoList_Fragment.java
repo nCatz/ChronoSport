@@ -11,6 +11,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import com.ncatz.chronosport.Home_Activity;
@@ -33,15 +34,11 @@ import java.util.ArrayList;
 
 public class ChronoList_Fragment extends Fragment implements IChronoList.View{
 
-    private RecyclerView recyclerView;
-    private FloatingActionButton fabAdd;
+    private ListView listView;
 
     private ChronoList_Adapter adapter;
     private IChronoList presenter;
     private ManageFragmentCallback mCallback;
-
-    //Borrar despues de las pruebas
-    ChronoWidget chronoWidget;
 
     public ChronoList_Fragment(){
 
@@ -56,7 +53,7 @@ public class ChronoList_Fragment extends Fragment implements IChronoList.View{
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         presenter = new ChronoList_Presenter(this);
-        adapter = new ChronoList_Adapter(getDefaultItems());
+        adapter = new ChronoList_Adapter(getContext(),getDefaultItems());
         adapter.setOnPlayListener(new ChronoList_Adapter.OnPlayListener() {
             @Override
             public void onPlay(Chrono clickedChrono) {
@@ -72,16 +69,8 @@ public class ChronoList_Fragment extends Fragment implements IChronoList.View{
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.chronolist_fragment,container,false);
 
-        recyclerView = (RecyclerView) rootView.findViewById(R.id.rvChronoList);
-        fabAdd = (FloatingActionButton) rootView.findViewById(R.id.fabAddChrono);
-        fabAdd.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                fabClick();
-            }
-        });
-        recyclerView.setAdapter(adapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        listView = (ListView) rootView.findViewById(R.id.lvChronoList);
+        listView.setAdapter(adapter);
 
         return rootView;
     }
@@ -96,9 +85,6 @@ public class ChronoList_Fragment extends Fragment implements IChronoList.View{
     public void onDetach() {
         super.onDetach();
         mCallback = null;
-    }
-
-    private void fabClick() {
     }
 
     private ArrayList<Chrono> getDefaultItems() {

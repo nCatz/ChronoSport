@@ -1,11 +1,14 @@
 package com.ncatz.chronosport.adapters;
 
+import android.content.Context;
+import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -23,28 +26,31 @@ import java.util.List;
  * Created by yeray697 on 4/02/17.
  */
 
-public class ChronoList_Adapter extends RecyclerView.Adapter<ChronoList_Adapter.ChronoHolder> {
-
-    private ArrayList<Chrono> items;
-
-    public ChronoList_Adapter(ArrayList<Chrono> items) {
-        this.items = items;
-    }
+public class ChronoList_Adapter extends ArrayAdapter<Chrono> {
 
     private OnPlayListener onPlayListener;
+
+    public ChronoList_Adapter(Context context, List<Chrono> objects) {
+        super(context, R.layout.chronolist_item, objects);
+    }
 
     public interface OnPlayListener{
         void onPlay(Chrono clickedChrono);
     }
 
+    @NonNull
     @Override
-    public ChronoHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new ChronoHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.chronolist_item,parent,false));
-    }
-
-    @Override
-    public void onBindViewHolder(final ChronoHolder holder, int position) {
-        final Chrono chrono = items.get(holder.getAdapterPosition());
+    public View getView(int position, View convertView, ViewGroup parent) {
+        final ChronoHolder holder;
+        View view = convertView;
+        if (view == null) {
+            view = LayoutInflater.from(getContext()).inflate(R.layout.chronolist_item,parent,false);
+            holder = new ChronoHolder(view);
+            view.setTag(holder);
+        } else {
+            holder = (ChronoHolder) view.getTag();
+        }
+        final Chrono chrono = getItem(position);
         holder.tvTitle.setText(chrono.getName());
         //holder.tvTime.setText();
         holder.tvRepetitions.setText("Repetitions: " + chrono.getRepetitions());
@@ -81,14 +87,10 @@ public class ChronoList_Adapter extends RecyclerView.Adapter<ChronoList_Adapter.
                 }
             }
         });
+        return view;
     }
 
-    @Override
-    public int getItemCount() {
-        return (items == null)?0:items.size();
-    }
-
-    class ChronoHolder extends RecyclerView.ViewHolder {
+    class ChronoHolder{
         View root;
         RelativeLayout rlHead,rlBody;
         TextView tvTitle;
@@ -100,7 +102,6 @@ public class ChronoList_Adapter extends RecyclerView.Adapter<ChronoList_Adapter.
         Button btPlay;
 
         public ChronoHolder(View itemView) {
-            super(itemView);
             adapter = new ChronoSubList_Adapter();
             root = itemView;
             tvTitle = (TextView) itemView.findViewById(R.id.tvChronoTitle_item);
