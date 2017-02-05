@@ -18,14 +18,14 @@ public interface IChronoPlayer {
 
         void startChrono(int time);
 
+        void reloadElemts();
+
     }
 
     interface Presenter{
 
 
         void verifyElements();
-
-
 
     }
 }

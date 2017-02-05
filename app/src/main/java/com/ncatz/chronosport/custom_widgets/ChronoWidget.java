@@ -35,6 +35,7 @@ public class ChronoWidget extends RelativeLayout {
 
     private ChronoThread chronoThread;
     private TextView textView;
+    private  boolean running;
     private CircleProgressView progressBar;
     private ImageButton btnStartPause, btnNext;
     private IChronoActionListener callBack;
@@ -49,7 +50,7 @@ public class ChronoWidget extends RelativeLayout {
         public void onTick(final int actualTime) {
 
             final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("mm:ss");
-            ((Activity)getContext()).runOnUiThread(new Runnable() {
+           ((Activity)getContext()).runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
 
@@ -62,7 +63,15 @@ public class ChronoWidget extends RelativeLayout {
         @Override
         public void onFinish() {
 
+            running = false;
             chronoThread = null;
+            ((Activity)getContext()).runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    btnStartPause.setImageResource(android.R.drawable.ic_media_play);
+
+                }
+            });
             throwOnFinish();
 
         }
@@ -71,12 +80,15 @@ public class ChronoWidget extends RelativeLayout {
     public interface IChronoActionListener extends ChronoThread.IChronoIteractionListener{
 
         void onNextButtonCliked();
+
+        void onButtonStartPauseCliked();
     }
 
     public ChronoWidget(Context context, AttributeSet attrs) {
         super(context, attrs);
         ((Activity)context).getLayoutInflater().inflate(R.layout.mixer_chrono,this,true);
         setGravity(Gravity.CENTER);
+        running = false;
         textView = (TextView)findViewById(R.id.chronoText);
         textView.setText("00:00");
         progressBar = (CircleProgressView) findViewById(R.id.progress);
@@ -86,6 +98,8 @@ public class ChronoWidget extends RelativeLayout {
         btnStartPause.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                callBack.onButtonStartPauseCliked();
 
                 if(chronoThread != null) {
 
@@ -124,6 +138,11 @@ public class ChronoWidget extends RelativeLayout {
         }
     }
 
+    public boolean isRunning(){
+
+
+        return running;
+    }
 
     public void disableButtons(){
 
@@ -158,6 +177,7 @@ public class ChronoWidget extends RelativeLayout {
     }
 
     public void activateChrono(int time, int interval){
+        running = true;
         chronoThread = new ChronoThread(time, interval);
         chronoThread.setChronoListener(listener);
         chronoThread.startChrono();

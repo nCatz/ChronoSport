@@ -12,6 +12,7 @@ import com.ncatz.chronosport.model.ChronoElement;
 import com.ncatz.chronosport.model.ChronoRepetitionElement;
 import com.ncatz.chronosport.model.ChronoTimeElement;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -52,12 +53,19 @@ public class ChronoPlayer_Adapter extends RecyclerView.Adapter <ChronoPlayer_Ada
 
         }else {
 
-            holder.txvActionElement.setText(String.valueOf(((ChronoTimeElement)element).getTime())+" "
-                    +context.getString(R.string.time));
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("mm:ss");
+            holder.txvActionElement.setText(String.valueOf(simpleDateFormat.format((((ChronoTimeElement)element).getTime()))+" "
+                    +context.getString(R.string.time)));
         }
 
     }
 
+
+    public void clearItems(){
+
+        list.clear();
+        notifyItemRangeRemoved(0, list.size()-1);
+    }
 
     public void addItem(ChronoElement element){
 

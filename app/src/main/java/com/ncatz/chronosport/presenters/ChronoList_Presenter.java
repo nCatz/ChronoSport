@@ -49,12 +49,12 @@ public class ChronoList_Presenter implements IChronoList{
 
     private ArrayList<Chrono> getDefaultItems() {
         ArrayList<ChronoElement> elements = new ArrayList<>();
-        elements.add(new ChronoTimeElement("dfnbc",50));
+        elements.add(new ChronoTimeElement("dfnbc",5000));
         elements.add(new ChronoRepetitionElement("qttwg",15));
         ArrayList<Chrono> items = new ArrayList<>();
         Chrono chrono = new Chrono();
         elements = new ArrayList<>();
-        elements.add(new ChronoTimeElement("asgasg",150));
+        elements.add(new ChronoTimeElement("asgasg",15000));
         elements.add(new ChronoRepetitionElement("qttwg",15));
         chrono.setElements(elements);
         chrono.setName("aaaa");
@@ -62,19 +62,19 @@ public class ChronoList_Presenter implements IChronoList{
         items.add(chrono);
         chrono = new Chrono();
         elements = new ArrayList<>();
-        elements.add(new ChronoTimeElement("asgasg",150));
+        elements.add(new ChronoTimeElement("asgasg",150000));
         elements.add(new ChronoRepetitionElement("jgkf",20));
-        elements.add(new ChronoTimeElement("dfnbc",50));
+        elements.add(new ChronoTimeElement("dfnbc",5000));
         chrono.setElements(elements);
         chrono.setName("bbbb");
         chrono.setRepetitions(4);
         items.add(chrono);
         chrono = new Chrono();
         elements = new ArrayList<>();
-        elements.add(new ChronoTimeElement("asgasg",150));
+        elements.add(new ChronoTimeElement("asgasg",150000));
         elements.add(new ChronoRepetitionElement("jgkf",20));
         elements.add(new ChronoRepetitionElement("qttwg",15));
-        elements.add(new ChronoTimeElement("dfnbc",50));
+        elements.add(new ChronoTimeElement("dfnbc",5000));
         chrono.setElements(elements);
         chrono.setName("cccc");
         chrono.setRepetitions(3);
@@ -89,9 +89,9 @@ public class ChronoList_Presenter implements IChronoList{
         items.add(chrono);
         chrono = new Chrono();
         elements = new ArrayList<>();
-        elements.add(new ChronoTimeElement("asgasg",150));
+        elements.add(new ChronoTimeElement("asgasg",150000));
         elements.add(new ChronoRepetitionElement("jgkf",20));
-        elements.add(new ChronoTimeElement("dfnbc",50));
+        elements.add(new ChronoTimeElement("dfnbc",5000));
         chrono.setName("eeee");
         chrono.setElements(elements);
         chrono.setRepetitions(1);

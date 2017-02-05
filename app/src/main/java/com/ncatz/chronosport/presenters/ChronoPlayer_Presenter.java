@@ -3,6 +3,7 @@ package com.ncatz.chronosport.presenters;
 import android.content.Context;
 
 import com.ncatz.chronosport.R;
+import com.ncatz.chronosport.fragments.ChronoPlayer_Fragment;
 import com.ncatz.chronosport.interfaces.IChronoPlayer;
 import com.ncatz.chronosport.model.Chrono;
 import com.ncatz.chronosport.model.ChronoElement;
@@ -24,14 +25,18 @@ public class ChronoPlayer_Presenter {
     public ChronoPlayer_Presenter(IChronoPlayer.View view, List<ChronoElement> elementList, int repetitions){
 
         this.view = view;
-        this.context = (Context)view;
+        this.context = ((ChronoPlayer_Fragment)view).getContext();
         this.listElemt = elementList;
         this.repetitions = repetitions;
         this.contRepetitions = 1;
 
         if(listElemt.size() == 0){
-            this.view.setTitleForChrono("0/"+String.valueOf(listElemt.size()));
+
             this.view.setDisableChronoButtons();
+        }else {
+
+            this.view.setTitleForChrono(String.valueOf(contRepetitions)+"/"+String.valueOf(repetitions));
+            this.view.setElementForChrono(listElemt.get(0));
         }
     }
 
@@ -39,7 +44,19 @@ public class ChronoPlayer_Presenter {
 
         if(contRepetitions <= repetitions){
 
+            if(lastElementShow == listElemt.size()-1){
+
+                contRepetitions++;
+                view.reloadElemts();
+            }
+
+            if(contRepetitions <= repetitions){
+
+                this.view.setTitleForChrono(String.valueOf(contRepetitions)+"/"+String.valueOf(repetitions));
+            }
+
             view.setElementForChrono(listElemt.get((lastElementShow+1)%listElemt.size()));
+
 
         }else {
 

@@ -15,7 +15,9 @@ public abstract class ChronoElement implements Parcelable{
     private int id;
     private String name;
 
-    public ChronoElement (String name){this.name = name;}
+    public ChronoElement (String name){
+        this.name = name;
+    }
 
     protected ChronoElement(Parcel in) {
         id = in.readInt();
@@ -67,19 +69,4 @@ public abstract class ChronoElement implements Parcelable{
         }
     }
 
-    @Override
-    public boolean equals(Object obj) {
-
-        boolean result = false;
-
-        if(obj != null){
-
-            if(obj instanceof ChronoElement){
-
-                result = this.id == ((ChronoElement) obj).id;
-            }
-        }
-
-        return result;
-    }
 }

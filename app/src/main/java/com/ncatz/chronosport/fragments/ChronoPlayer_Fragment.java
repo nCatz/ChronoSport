@@ -62,9 +62,9 @@ public class ChronoPlayer_Fragment extends Fragment implements IChronoPlayer.Vie
         recyclerView = (RecyclerView)rootView.findViewById(R.id.recycler);
         recyclerView.setItemAnimator(new SlideInLeftAnimator());
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        presenter = new  ChronoPlayer_Presenter(this, chrono.getElements(), limit);
         adapter = new ChronoPlayer_Adapter(getContext());
         recyclerView.setAdapter(adapter);
+        presenter = new  ChronoPlayer_Presenter(this, chrono.getElements(), limit);
         return rootView;
     }
 
@@ -75,7 +75,13 @@ public class ChronoPlayer_Fragment extends Fragment implements IChronoPlayer.Vie
             @Override
             public void onNextButtonCliked() {
 
-                presenter.indicateElement(lastShowPosition);
+                presenter.indicateElement(lastShowPosition++);
+            }
+
+            @Override
+            public void onButtonStartPauseCliked() {
+
+
             }
 
             @Override
@@ -91,12 +97,19 @@ public class ChronoPlayer_Fragment extends Fragment implements IChronoPlayer.Vie
             @Override
             public void onFinish() {
 
-                presenter.indicateElement(lastShowPosition);
+               if(getActivity() != null){
+
+                   getActivity().runOnUiThread(new Runnable() {
+                       @Override
+                       public void run() {
+
+                           presenter.indicateElement(lastShowPosition);
+                       }
+                   });
+               }
             }
         });
     }
-
-
 
 
     @Override
@@ -130,6 +143,7 @@ public class ChronoPlayer_Fragment extends Fragment implements IChronoPlayer.Vie
 
             if(element instanceof ChronoTimeElement){
 
+                chronoWidget.setVisivilityForButtonStart(true);
                 startChrono(((ChronoTimeElement) element).getTime());
 
             }else {
@@ -138,6 +152,10 @@ public class ChronoPlayer_Fragment extends Fragment implements IChronoPlayer.Vie
             }
 
             lastShowPosition = chrono.getElements().indexOf(element);
+
+        }else {
+
+            adapter.clearItems();
         }
     }
 
@@ -145,5 +163,11 @@ public class ChronoPlayer_Fragment extends Fragment implements IChronoPlayer.Vie
     public void startChrono(int time) {
 
         chronoWidget.activateChrono(time, INTERVAL);
+    }
+
+    @Override
+    public void reloadElemts() {
+
+
     }
 }
