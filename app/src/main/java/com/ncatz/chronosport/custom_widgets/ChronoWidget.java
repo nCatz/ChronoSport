@@ -35,7 +35,6 @@ public class ChronoWidget extends RelativeLayout {
 
     private ChronoThread chronoThread;
     private TextView textView;
-    private  boolean running;
     private CircleProgressView progressBar;
     private ImageButton btnStartPause, btnNext;
     private IChronoActionListener callBack;
@@ -63,7 +62,6 @@ public class ChronoWidget extends RelativeLayout {
         @Override
         public void onFinish() {
 
-            running = false;
             chronoThread = null;
             ((Activity)getContext()).runOnUiThread(new Runnable() {
                 @Override
@@ -77,6 +75,8 @@ public class ChronoWidget extends RelativeLayout {
         }
     };
 
+
+
     public interface IChronoActionListener extends ChronoThread.IChronoIteractionListener{
 
         void onNextButtonCliked();
@@ -88,7 +88,6 @@ public class ChronoWidget extends RelativeLayout {
         super(context, attrs);
         ((Activity)context).getLayoutInflater().inflate(R.layout.mixer_chrono,this,true);
         setGravity(Gravity.CENTER);
-        running = false;
         textView = (TextView)findViewById(R.id.chronoText);
         textView.setText("00:00");
         progressBar = (CircleProgressView) findViewById(R.id.progress);
@@ -98,6 +97,7 @@ public class ChronoWidget extends RelativeLayout {
         btnStartPause.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
+
 
                 callBack.onButtonStartPauseCliked();
 
@@ -138,11 +138,7 @@ public class ChronoWidget extends RelativeLayout {
         }
     }
 
-    public boolean isRunning(){
 
-
-        return running;
-    }
 
     public void disableButtons(){
 
@@ -150,9 +146,14 @@ public class ChronoWidget extends RelativeLayout {
         btnNext.setVisibility(GONE);
     }
 
-    public void setVisivilityForButtonStart(boolean visibility){
+    public void setVisivilityForButtonStart(boolean visivility){
 
-        btnStartPause.setVisibility( visibility ? VISIBLE:GONE);
+        btnStartPause.setVisibility( visivility ? VISIBLE:GONE);
+    }
+
+    public void setVisivilityForButtonNext(boolean visivility){
+
+        btnNext.setVisibility( visivility ? VISIBLE:GONE);
     }
 
     public void setShapeButtons(Drawable drawable){
@@ -171,18 +172,23 @@ public class ChronoWidget extends RelativeLayout {
         progressBar.setRimColor(color);
     }
 
+    public void setTimeVisible(boolean visible){
+
+        textView.setVisibility(visible?VISIBLE:GONE);
+    }
+
     public void setOnChronoListener(IChronoActionListener listener){
 
         this.callBack = listener;
     }
 
     public void activateChrono(int time, int interval){
-        running = true;
-        chronoThread = new ChronoThread(time, interval);
+
+        chronoThread = new ChronoThread(time+1000, interval);
         chronoThread.setChronoListener(listener);
         chronoThread.startChrono();
-        progressBar.setValue(time);
-        progressBar.setMaxValue(time);
+        progressBar.setValue(time+1000);
+        progressBar.setMaxValue(time+1000);
     }
 
     public void setButonStartPauseBackColor(int color){
@@ -224,11 +230,13 @@ public class ChronoWidget extends RelativeLayout {
         }
     }
 
+
     public void destroyChrono(){
 
         if(chronoThread != null){
 
             chronoThread.stopChrono();
+
         }
     }
 

@@ -1,5 +1,6 @@
 package com.ncatz.chronosport.interfaces;
 
+import com.ncatz.chronosport.adapters.ChronoPlayer_Adapter;
 import com.ncatz.chronosport.model.ChronoElement;
 
 /**
@@ -10,7 +11,6 @@ public interface IChronoPlayer {
 
     interface View{
 
-        void setTitleForChrono(String title);
 
         void setDisableChronoButtons();
 
@@ -18,7 +18,7 @@ public interface IChronoPlayer {
 
         void startChrono(int time);
 
-        void reloadElemts();
+        void setAdapter(ChronoPlayer_Adapter adapter);
 
     }
 

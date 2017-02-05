@@ -10,6 +10,7 @@ public class ChronoThread extends Thread{
     private int actualTime;
     private int interval;
     private boolean paused;
+    private boolean reset;
     private IChronoIteractionListener listener;
 
     interface IChronoIteractionListener{
@@ -21,11 +22,21 @@ public class ChronoThread extends Thread{
         void onFinish();
     }
 
+    public boolean isReset() {
+        return reset;
+    }
+
+    public void setReset(boolean reset) {
+        this.reset = reset;
+    }
+
     public ChronoThread(int totalTime, int interval){
 
         this.totalTime = totalTime;
         this.actualTime = totalTime;
         this.paused = true;
+        this.reset = false;
+
         this.interval = interval;
 
     }
@@ -48,6 +59,7 @@ public class ChronoThread extends Thread{
 
     public void stopChrono(){
 
+        reset = true;
         interrupt();
         actualTime = 0;
         paused = true;
@@ -104,7 +116,12 @@ public class ChronoThread extends Thread{
               }
           }
 
-        throwOnFinish();
+        if(!reset){
+
+            throwOnFinish();
+        }
+
+
     }
 
     private void throwOnStart(){
@@ -120,6 +137,7 @@ public class ChronoThread extends Thread{
         if(listener != null){
 
             listener.onTick((actualTime -= interval));
+
         }
     }
 

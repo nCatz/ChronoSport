@@ -24,12 +24,19 @@ public class ChronoPlayer_Adapter extends RecyclerView.Adapter <ChronoPlayer_Ada
 
     private List<ChronoElement> list;
     private Context context;
+    private IAdapterComunication callBack;
+
+   public   interface IAdapterComunication{
+
+        void onRemoveElement();
+    }
 
 
-    public ChronoPlayer_Adapter(Context context){
+    public ChronoPlayer_Adapter(Context context, IAdapterComunication callBack){
 
         this.context = context;
         list = new ArrayList<ChronoElement>();
+        this.callBack = callBack;
     }
 
     @Override
@@ -43,7 +50,7 @@ public class ChronoPlayer_Adapter extends RecyclerView.Adapter <ChronoPlayer_Ada
     @Override
     public void onBindViewHolder(ChronoElementViewHolder holder, int position) {
 
-        ChronoElement element = list.get(position);
+        ChronoElement element = list.get(holder.getAdapterPosition());
         holder.txvNameElement.setText(element.getName());
 
         if(element instanceof ChronoRepetitionElement){
@@ -61,10 +68,22 @@ public class ChronoPlayer_Adapter extends RecyclerView.Adapter <ChronoPlayer_Ada
     }
 
 
+    public ChronoElement getItem(int position){
+
+        return list.get(position);
+    }
+
     public void clearItems(){
 
         list.clear();
         notifyItemRangeRemoved(0, list.size()-1);
+    }
+
+    public void removeItem(){
+
+        list.remove(0);
+        notifyItemRemoved(0);
+        callBack.onRemoveElement();
     }
 
     public void addItem(ChronoElement element){
@@ -76,7 +95,7 @@ public class ChronoPlayer_Adapter extends RecyclerView.Adapter <ChronoPlayer_Ada
     public void addAllItems(List<ChronoElement> elementList){
 
         list.addAll(elementList);
-        notifyDataSetChanged();
+        notifyItemRangeInserted(0, list.size()-1);
     }
 
     @Override

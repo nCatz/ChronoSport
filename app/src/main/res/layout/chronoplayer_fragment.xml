@@ -5,19 +5,9 @@
     android:layout_height="match_parent">
 
 
-    <TextView
-        android:layout_centerHorizontal="true"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:textColor="@android:color/black"
-        android:id="@+id/txvTitle"
-        android:layout_marginBottom="8dp"
-        />
 
     <com.ncatz.chronosport.custom_widgets.ChronoWidget
         android:layout_marginTop="10dp"
-        android:layout_below="@+id/txvTitle"
         android:id="@+id/chrono"
         chrono:background_progress_color="@android:color/darker_gray"
         chrono:bar_progress_color="@android:color/holo_red_dark"
@@ -26,7 +16,7 @@
         android:layout_width="match_parent"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="10dp"
+        android:layout_marginBottom="5dp"
         android:layout_height="wrap_content">
 
     </com.ncatz.chronosport.custom_widgets.ChronoWidget>

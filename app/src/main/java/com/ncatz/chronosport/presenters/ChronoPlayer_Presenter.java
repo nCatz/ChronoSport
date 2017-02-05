@@ -3,64 +3,61 @@ package com.ncatz.chronosport.presenters;
 import android.content.Context;
 
 import com.ncatz.chronosport.R;
+import com.ncatz.chronosport.adapters.ChronoPlayer_Adapter;
 import com.ncatz.chronosport.fragments.ChronoPlayer_Fragment;
 import com.ncatz.chronosport.interfaces.IChronoPlayer;
 import com.ncatz.chronosport.model.Chrono;
 import com.ncatz.chronosport.model.ChronoElement;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by amador on 5/02/17.
  */
 
-public class ChronoPlayer_Presenter {
+public class ChronoPlayer_Presenter implements ChronoPlayer_Adapter.IAdapterComunication {
 
     private IChronoPlayer.View view;
     private List<ChronoElement> listElemt;
     private Context context;
-    private int repetitions;
-    private int contRepetitions;
+    private ChronoPlayer_Adapter adapter;
 
     public ChronoPlayer_Presenter(IChronoPlayer.View view, List<ChronoElement> elementList, int repetitions){
 
         this.view = view;
         this.context = ((ChronoPlayer_Fragment)view).getContext();
-        this.listElemt = elementList;
-        this.repetitions = repetitions;
-        this.contRepetitions = 1;
+        this.adapter = new ChronoPlayer_Adapter(context, this);
 
-        if(listElemt.size() == 0){
+        if(elementList.size() == 0){
 
-            this.view.setDisableChronoButtons();
+            view.setDisableChronoButtons();
+
         }else {
 
-            this.view.setTitleForChrono(String.valueOf(contRepetitions)+"/"+String.valueOf(repetitions));
-            this.view.setElementForChrono(listElemt.get(0));
+            for(int i = 0; i < repetitions; i++){
+
+                adapter.addAllItems(new ArrayList<ChronoElement>(elementList));
+
+            }
+
+            view.setAdapter(adapter);
+            view.setElementForChrono(adapter.getItem(0));
         }
     }
 
-    public void indicateElement(int lastElementShow){
 
-        if(contRepetitions <= repetitions){
+    @Override
+    public void onRemoveElement() {
 
-            if(lastElementShow == listElemt.size()-1){
+        if(adapter.getItemCount() > 0){
 
-                contRepetitions++;
-                view.reloadElemts();
-            }
-
-            if(contRepetitions <= repetitions){
-
-                this.view.setTitleForChrono(String.valueOf(contRepetitions)+"/"+String.valueOf(repetitions));
-            }
-
-            view.setElementForChrono(listElemt.get((lastElementShow+1)%listElemt.size()));
+            view.setElementForChrono(adapter.getItem(0));
 
 
         }else {
 
-            view.setDisableChronoButtons();
+            view.setElementForChrono(null);
         }
     }
 }

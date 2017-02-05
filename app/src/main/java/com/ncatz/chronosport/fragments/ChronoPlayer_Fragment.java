@@ -35,12 +35,13 @@ public class ChronoPlayer_Fragment extends Fragment implements IChronoPlayer.Vie
     private RecyclerView recyclerView;
     private ChronoWidget chronoWidget;
     private ChronoPlayer_Presenter presenter;
-    private TextView txvTitle;
-    private int lastShowPosition = 0;
+    private ChronoElement actualElement;
+    private boolean active;
     private final int INTERVAL = 1000;
     private int limit;
 
     public ChronoPlayer_Fragment(){
+
 
     }
     public static ChronoPlayer_Fragment newFragment(Bundle args){
@@ -50,20 +51,25 @@ public class ChronoPlayer_Fragment extends Fragment implements IChronoPlayer.Vie
         return fragment;
     }
 
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        setRetainInstance(true);
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+
         View rootView = inflater.inflate(R.layout.chronoplayer_fragment,container,false);
         chrono = getArguments().getParcelable(Home_Activity.CHRONO_ARGS_KEY);
         chronoWidget = (ChronoWidget)rootView.findViewById(R.id.chrono);
+        active = false;
         registerChronoEvents();
         limit = chrono.getRepetitions();
-        txvTitle = (TextView)rootView.findViewById(R.id.txvTitle);
         recyclerView = (RecyclerView)rootView.findViewById(R.id.recycler);
         recyclerView.setItemAnimator(new SlideInLeftAnimator());
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        adapter = new ChronoPlayer_Adapter(getContext());
-        recyclerView.setAdapter(adapter);
         presenter = new  ChronoPlayer_Presenter(this, chrono.getElements(), limit);
         return rootView;
     }
@@ -75,13 +81,23 @@ public class ChronoPlayer_Fragment extends Fragment implements IChronoPlayer.Vie
             @Override
             public void onNextButtonCliked() {
 
-                presenter.indicateElement(lastShowPosition++);
+              if(actualElement instanceof ChronoTimeElement){
+
+
+              }else {
+
+                  removeItem();
+              }
+
             }
 
             @Override
             public void onButtonStartPauseCliked() {
 
+                if(!active){
 
+                    startChrono(((ChronoTimeElement)actualElement).getTime());
+                }
             }
 
             @Override
@@ -96,21 +112,11 @@ public class ChronoPlayer_Fragment extends Fragment implements IChronoPlayer.Vie
 
             @Override
             public void onFinish() {
-
-               if(getActivity() != null){
-
-                   getActivity().runOnUiThread(new Runnable() {
-                       @Override
-                       public void run() {
-
-                           presenter.indicateElement(lastShowPosition);
-                       }
-                   });
-               }
+                active = false;
+              removeItem();
             }
         });
     }
-
 
     @Override
     public void onDetach() {
@@ -121,17 +127,27 @@ public class ChronoPlayer_Fragment extends Fragment implements IChronoPlayer.Vie
         }
         super.onDetach();
     }
-
-    @Override
-    public void setTitleForChrono(String title) {
-
-        txvTitle.setText(chrono.getName()+" "+title);
-    }
-
+    
     @Override
     public void setDisableChronoButtons() {
 
         chronoWidget.disableButtons();
+    }
+
+    private void removeItem(){
+
+        if(getActivity() != null){
+
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+
+                    adapter.removeItem();
+                    chronoWidget.destroyChrono();
+
+                }
+            });
+        }
     }
 
     @Override
@@ -139,35 +155,43 @@ public class ChronoPlayer_Fragment extends Fragment implements IChronoPlayer.Vie
 
         if(element != null){
 
-            adapter.addItem(element);
+            actualElement = element;
 
             if(element instanceof ChronoTimeElement){
 
                 chronoWidget.setVisivilityForButtonStart(true);
-                startChrono(((ChronoTimeElement) element).getTime());
+                chronoWidget.setVisivilityForButtonNext(false);
+                chronoWidget.setTimeVisible(true);
+
 
             }else {
 
+                chronoWidget.setTimeVisible(false);
+                chronoWidget.setVisivilityForButtonNext(true);
                 chronoWidget.setVisivilityForButtonStart(false);
             }
 
-            lastShowPosition = chrono.getElements().indexOf(element);
 
         }else {
 
-            adapter.clearItems();
+            chronoWidget.disableButtons();
+            chronoWidget.destroyChrono();
         }
     }
 
     @Override
     public void startChrono(int time) {
 
+        active = true;
         chronoWidget.activateChrono(time, INTERVAL);
     }
 
     @Override
-    public void reloadElemts() {
+    public void setAdapter(ChronoPlayer_Adapter adapter) {
 
-
+        this.adapter = adapter;
+        recyclerView.setAdapter(adapter);
     }
+
+
 }
