@@ -16,9 +16,10 @@ import com.ncatz.chronosport.interfaces.ManageFragmentCallback;
 public class Home_Activity extends AppCompatActivity implements ManageFragmentCallback {
 
     private static final String CURRENT_FRAGMENT_TAG_KEY = "CURRENT_FRAGMENT_TAG";
+    public static final String CHRONO_ARGS_KEY = "SELECTED_CHRONO";
     private final static String CHRONO_LIST_TAG = "chronolist";
-    private final static String CHRONO_PLAYER_TAG = "chronoplayer";
-    private final static String MANAGE_CHRONO_TAG = "managechrono";
+    public final static String CHRONO_PLAYER_TAG = "chronoplayer";
+    public final static String MANAGE_CHRONO_TAG = "managechrono";
 
     private String currentFragmentTag;
 

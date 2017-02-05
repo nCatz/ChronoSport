@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.ncatz.chronosport.Home_Activity;
 import com.ncatz.chronosport.R;
 import com.ncatz.chronosport.custom_widgets.ChronoWidget;
 import com.ncatz.chronosport.adapters.ChronoList_Adapter;
@@ -59,7 +60,9 @@ public class ChronoList_Fragment extends Fragment implements IChronoList.View{
         adapter.setOnPlayListener(new ChronoList_Adapter.OnPlayListener() {
             @Override
             public void onPlay(Chrono clickedChrono) {
-                Toast.makeText(getContext(), "Play " + clickedChrono.getName(), Toast.LENGTH_SHORT).show();
+                Bundle args = new Bundle();
+                args.putParcelable(Home_Activity.CHRONO_ARGS_KEY,clickedChrono);
+                mCallback.swapFragment(Home_Activity.CHRONO_PLAYER_TAG,args);
             }
         });
     }

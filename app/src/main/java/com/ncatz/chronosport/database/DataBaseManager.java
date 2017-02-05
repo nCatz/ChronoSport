@@ -127,10 +127,8 @@ public class DataBaseManager {
 
             do{
 
-                element = new ChronoRepetitionElement();
+                element = new ChronoRepetitionElement(cursor.getString(1),cursor.getInt(2));
                 element.setId(cursor.getInt(0));
-                element.setName(cursor.getString(1));
-                element.setRepetitions(cursor.getInt(2));
                 list.add(element);
 
             }while (cursor.moveToNext());
@@ -153,10 +151,8 @@ public class DataBaseManager {
 
             do{
 
-                element = new ChronoTimeElement();
+                element = new ChronoTimeElement(cursor.getString(1),cursor.getInt(2));
                 element.setId(cursor.getInt(0));
-                element.setName(cursor.getString(1));
-                element.setTime(cursor.getInt(2));
                 list.add(element);
 
             }while (cursor.moveToNext());

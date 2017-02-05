@@ -1,5 +1,8 @@
 package com.ncatz.chronosport.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,7 +10,7 @@ import java.util.List;
  * Created by yeray697 on 2/02/17.
  */
 
-public class Chrono {
+public class Chrono implements Parcelable{
     private final int MIN_REPETITIONS = 1;
     private final int MAX_ELEMENTS = 20;
 
@@ -26,6 +29,29 @@ public class Chrono {
         expanded = false;
 
     }
+
+    protected Chrono(Parcel in) {
+        MIN_REPETITIONS = in.readInt();
+        MAX_ELEMENTS = in.readInt();
+        id = in.readInt();
+        name = in.readString();
+        elements = in.createTypedArrayList(ChronoElement.CREATOR);
+        repetitions = in.readInt();
+        playing = in.readByte() != 0;
+        expanded = in.readByte() != 0;
+    }
+
+    public static final Creator<Chrono> CREATOR = new Creator<Chrono>() {
+        @Override
+        public Chrono createFromParcel(Parcel in) {
+            return new Chrono(in);
+        }
+
+        @Override
+        public Chrono[] newArray(int size) {
+            return new Chrono[size];
+        }
+    };
 
     public int getId() {
         return id;
@@ -131,5 +157,22 @@ public class Chrono {
 
     public void invertExpand() {
         expanded = !expanded;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(MIN_REPETITIONS);
+        dest.writeInt(MAX_ELEMENTS);
+        dest.writeInt(id);
+        dest.writeString(name);
+        dest.writeTypedList(elements);
+        dest.writeInt(repetitions);
+        dest.writeByte((byte) (playing ? 1 : 0));
+        dest.writeByte((byte) (expanded ? 1 : 0));
     }
 }
